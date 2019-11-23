@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 define('YOUR_SERVER_URL', 'http://dad.prj.test');
-//NOTE: Este client ID tem que ser o 2? Ou pode ser o primeiro?
 define('CLIENT_ID', '2');
-define('CLIENT_SECRET', '1muhnOQOFXnYqVSMgEdEmQYf2a7ixuBB86Fe72jf');
 
 use Illuminate\Http\Request;
 
@@ -18,7 +16,7 @@ class LoginControllerAPI extends Controller
             'form_params' => [
                 'grant_type' => 'password',
                 'client_id' => CLIENT_ID,
-                'client_secret' => env(PASSWORD_SECRET),
+                'client_secret' => env("PASSWORD_SECRET"),
                 'username' => $request->email,
                 'password' => $request->password,
                 'scope' => ''
