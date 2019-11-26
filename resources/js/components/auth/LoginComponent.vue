@@ -5,25 +5,24 @@
         <h1 class="card-title text-center">{{ title }}</h1>
       </div>
     </div>
-    <!-- NOTE:
-    loginComp
-    O logout vai ser um botao que executa uma funçao que faz um pedido post para fazer logout?
-    -->
+    <form action="#" @submit.prevent="login">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input v-bind:email="email" id="email" type="text" v-model="email" required/>
+      </div>
 
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input v-bind:email=email id="email" type="text" />
-    </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input id="password" type="password" v-model="password" required/>
+      </div>
 
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input id="password" type="password"/>
-    </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Login</button>
+        <a class="btn btn-light" @click="cancelLogin()">Cancel</a>
+      </div>
 
-    <div class="form-group">
-      <a class="btn btn-primary" @click="login()">Login</a>
-      <a class="btn btn-light" @click="cancelLogin()">Cancel</a>
-    </div>
+      <div></div>
+    </form>
 
     <!--NOTE:  @keyup.enter="event()" para enter e faz submit? -->
   </div>
@@ -31,20 +30,21 @@
 
 <script>
 export default {
-  props: ["router"],
-
   data() {
     return {
       title: "Login",
-      password: '',
-      email: '',
+      password: "",
+      email: ""
     };
   },
   methods: {
     login() {
-      //   axios.post("/api/login", {});
+      this.$store.dispatch("login", {
+        email: this.email,
+        password: this.password
+      });
       //NOTE: No then temos que atribuir à variavel Vuex o valor do token
-      console.log(this.$store.state.user);
+      // console.log(this.$store.state.user);
     },
     cancelLogin() {
       this.$router.push("/");

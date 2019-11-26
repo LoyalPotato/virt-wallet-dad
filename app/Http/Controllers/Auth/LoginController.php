@@ -19,7 +19,7 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
+// NOTE: Tenho que alterar alguma coisa aqui nestes Auth Controllers?
     /**
      * Where to redirect users after login.
      *

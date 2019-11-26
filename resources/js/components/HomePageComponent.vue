@@ -20,6 +20,7 @@ import Register from "./auth/RegisterComponent";
 
 export default {
   // TODO: Find a more fitting name for this component. This is going to be the base component, not just the home page
+  // TODO: After the user logs in we should display it's name in the banner up top
   components: {
     login: Login,
     register: Register

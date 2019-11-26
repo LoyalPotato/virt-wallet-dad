@@ -1860,6 +1860,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   // TODO: Find a more fitting name for this component. This is going to be the base component, not just the home page
+  // TODO: After the user logs in we should display it's name in the banner up top
   components: {
     login: _auth_LoginComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     register: _auth_RegisterComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -1910,21 +1911,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["router"],
   data: function data() {
     return {
       title: "Login",
-      password: '',
-      email: ''
+      password: "",
+      email: ""
     };
   },
   methods: {
     login: function login() {
-      //   axios.post("/api/login", {});
-      //NOTE: No then temos que atribuir à variavel Vuex o valor do token
-      console.log(this.$store.state.user);
+      this.$store.dispatch("login", {
+        email: this.email,
+        password: this.password
+      }); //NOTE: No then temos que atribuir à variavel Vuex o valor do token
+      // console.log(this.$store.state.user);
     },
     cancelLogin: function cancelLogin() {
       this.$router.push("/");
@@ -20323,55 +20324,100 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "email" } }, [_vm._v("Email:")]),
-      _vm._v(" "),
-      _c("input", { attrs: { email: _vm.email, id: "email", type: "text" } })
-    ]),
-    _vm._v(" "),
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-primary",
-          on: {
-            click: function($event) {
-              return _vm.login()
-            }
+    _c(
+      "form",
+      {
+        attrs: { action: "#" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.login($event)
           }
-        },
-        [_vm._v("Login")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-light",
-          on: {
-            click: function($event) {
-              return _vm.cancelLogin()
+        }
+      },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "email" } }, [_vm._v("Email:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.email,
+                expression: "email"
+              }
+            ],
+            attrs: {
+              email: _vm.email,
+              id: "email",
+              type: "text",
+              required: ""
+            },
+            domProps: { value: _vm.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.email = $event.target.value
+              }
             }
-          }
-        },
-        [_vm._v("Cancel")]
-      )
-    ])
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "password" } }, [_vm._v("Password:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.password,
+                expression: "password"
+              }
+            ],
+            attrs: { id: "password", type: "password", required: "" },
+            domProps: { value: _vm.password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.password = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c(
+            "button",
+            { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+            [_vm._v("Login")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-light",
+              on: {
+                click: function($event) {
+                  return _vm.cancelLogin()
+                }
+              }
+            },
+            [_vm._v("Cancel")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div")
+      ]
+    )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "password" } }, [_vm._v("Password:")]),
-      _vm._v(" "),
-      _c("input", { attrs: { id: "password", type: "password" } })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -36866,7 +36912,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     user: null,
-    userToken: null
+    token: sessionStorage.getItem('access_token') || null
   },
   mutations: {
     assignUser: function assignUser(state, user) {
@@ -36874,6 +36920,20 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     },
     assignToken: function assignToken(state, token) {
       state.userToken = token;
+    }
+  },
+  actions: {
+    login: function login(context, credentials) {
+      axios.post("/api/login", {
+        email: credentials.email,
+        password: credentials.password
+      }).then(function (response) {
+        var token = response.data.access_token;
+        localStorage.setItem('access_token', token);
+        context.commit('assignToken', token); //TODO: Faço um endpoint na api para ir buscar qual é o user que se autenticou e atribuo aqui?
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   }
 });

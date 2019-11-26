@@ -17,8 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('login', 'LoginControllerAPI@login');
-Route::middleware('auth:api')->post('logout','LoginControllerAPI@logout');
-Route::get('movements', 'MovementControllerAPI@index');
+Route::post('login', 'AuthControllerAPI@login');
+Route::middleware('auth:api')->post('logout','AuthControllerAPI@logout');
+Route::middleware('auth:api')->post('register','AuthControllerAPI@register');
+Route::middleware('auth:api')->get('movements', 'MovementControllerAPI@index');
 
 // Route::middleware('auth:api')->get('users','')
