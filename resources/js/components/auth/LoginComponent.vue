@@ -21,7 +21,6 @@
         <a class="btn btn-light" @click="cancelLogin()">Cancel</a>
       </div>
 
-      <div></div>
     </form>
 
     <!--NOTE:  @keyup.enter="event()" para enter e faz submit? -->
@@ -43,6 +42,7 @@ export default {
         email: this.email,
         password: this.password
       });
+      
       //NOTE: No then temos que atribuir à variavel Vuex o valor do token
       // console.log(this.$store.state.user);
     },

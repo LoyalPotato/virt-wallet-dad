@@ -1856,6 +1856,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1881,7 +1885,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -1964,7 +1967,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.nav {\r\n  display: -webkit-box;\r\n  display: flex;\r\n  list-style: none;\r\n  padding: 15px 0;\r\n  margin: 0;\r\n  -webkit-box-pack: end;\r\n          justify-content: flex-end; /*NOTE: This is what makes it stick to the right */\r\n  background: #f5f8fa;\r\n  border-bottom: 1px solid lightgrey;\r\n  margin-bottom: 24px;\n}\n.nav a {\r\n  color: #636b6f;\r\n  padding: 0 25px;\r\n  font-size: 14px;\r\n  font-weight: 600;\r\n  letter-spacing: 0.1rem;\r\n  text-decoration: none;\r\n  text-transform: uppercase;\n}\n.nav a:hover {\r\n  color: #2e3335;\n}\n.nav a:active {\r\n  color: rgb(25, 0, 255);\n}\r\n", ""]);
+exports.push([module.i, "\n.nav {\r\n  display: -webkit-box;\r\n  display: flex;\r\n  list-style: none;\r\n  padding: 15px 0;\r\n  margin: 0;\r\n  -webkit-box-pack: end;\r\n          justify-content: flex-end; /*NOTE: This is what makes it stick to the right */\r\n  background: #f5f8fa;\r\n  border-bottom: 1px solid lightgrey;\r\n  margin-bottom: 24px;\n}\n.nav a {\r\n  color: #636b6f;\r\n  padding: 0 10px;\r\n  font-size: 14px;\r\n  font-weight: 600;\r\n  letter-spacing: 0.1rem;\r\n  text-decoration: none;\r\n  text-transform: uppercase;\n}\n.nav a:hover {\r\n  color: #2e3335;\n}\n.nav a:active {\r\n  color: rgb(25, 0, 255);\n}\r\n", ""]);
 
 // exports
 
@@ -20287,7 +20290,22 @@ var render = function() {
           ])
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _c("li", [
+        _c(
+          "a",
+          {
+            attrs: { href: "/logout" },
+            on: {
+              click: function($event) {
+                return _vm.logout()
+              }
+            }
+          },
+          [_vm._v("Logout")]
+        )
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "container" }, [_c("router-view")], 1)
@@ -20410,9 +20428,7 @@ var render = function() {
             },
             [_vm._v("Cancel")]
           )
-        ]),
-        _vm._v(" "),
-        _c("div")
+        ])
       ]
     )
   ])

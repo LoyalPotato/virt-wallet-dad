@@ -7,6 +7,10 @@
       <li>
         <router-link :to="{ name: 'register' }">Register</router-link>
       </li>
+      <li>
+        <a href="/logout" @click="logout()">Logout</a>
+      </li>
+
     </ul>
     <div class="container">
       <router-view></router-view>
@@ -26,8 +30,12 @@ export default {
     register: Register
   },
   data() {
-    return {};
-  }
+    return {
+
+    };
+  },
+
+
 };
 </script>
 
@@ -45,7 +53,7 @@ export default {
 
 .nav a {
   color: #636b6f;
-  padding: 0 25px;
+  padding: 0 10px;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1rem;
