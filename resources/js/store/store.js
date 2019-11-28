@@ -2,12 +2,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
         user: sessionStorage.getItem("authed_user") || null,
-        token: sessionStorage.getItem("access_token") || null
+        token: sessionStorage.getItem("access_token") || null,
     },
     mutations: {
         assignUser(state, user) {
@@ -15,6 +16,9 @@ export const store = new Vuex.Store({
         },
         assignToken(state, token) {
             state.token = token;
+        },
+        setMsg(state, msg) {
+            state.resMsg = msg;
         }
     },
     actions: {
@@ -26,11 +30,9 @@ export const store = new Vuex.Store({
                         password: credentials.password
                     })
                     .then(function(response) {
-                        const token = response.data.access_token;
-                        localStorage.setItem("access_token", token);
-                        context.commit("assignToken", token);
+                        localStorage.setItem("access_token", response.data.access_token);
+                        context.commit("assignToken", response.data.access_token);
                         resolve(response);
-                        //TODO: Faço um endpoint na api para ir buscar qual é o user que se autenticou e atribuo aqui?
                     })
                     .catch(function(error) {
                         reject(error);
@@ -52,35 +54,32 @@ export const store = new Vuex.Store({
                     .then(function(response) {
                         context.commit("assignToken", null);
                         localStorage.removeItem("access_token");
-                        console.log("Logged out");
+                        context.commit("assignUser", null);
+                        localStorage.removeItem("authed_user");
+                        console.log("Logged out"); //DEV_ONLY
                         resolve(response);
                     })
                     .catch(function(error) {
-                        console.log(error);
+                        console.log(error); //DEV_ONLY
                         reject(error);
                     });
             });
         },
         getAuthUser(context) {
-            // TEST: If user changes and gets stored in this
             return new Promise((resolve, reject) => {
                 axios
-                    .get(
-                        "/api/user/",
-                        { key: "value" },
-                        {
-                            headers: {
-                                Authorization: "Bearer " + this.state.token
-                            }
+                    .get("/api/user/", {
+                        headers: {
+                            Authorization: "Bearer " + this.state.token
                         }
-                        )
-                        .then(function(response) {
-                            context.commit("assignUser", response.data);
-                            localStorage.setItem("authed_user");
-                            resolve(response);
-                        })
-                        .catch(function(error) {
-                            reject(error);
+                    })
+                    .then(function(response) {
+                        context.commit("assignUser", response.data);
+                        localStorage.setItem("authed_user", response.data);
+                        resolve(response);
+                    })
+                    .catch(function(error) {
+                        reject(error);
                     });
             });
         }

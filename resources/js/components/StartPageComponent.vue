@@ -7,12 +7,13 @@
 
 <script>
 export default {
-
+  name: "StartPageComponent"
 }
 </script>
 
 <style>
 p{
     /* TODO: center */
+    text-align: center;
 }
 </style>

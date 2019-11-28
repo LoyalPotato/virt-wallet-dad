@@ -6,12 +6,22 @@
 <script>
 
 export default {
-  // TODO: After the user logs in we should display it's name in the banner up top
   data() {
     return {};
   },
   methods: {
     
+  },
+  computed:{
+    user(){
+      return this.$store.state.user;
+    },
   }
 };
 </script>
+
+<style>
+p{
+  text-align: center;
+}
+</style>

@@ -1,24 +1,18 @@
 <template>
   <div>
-    <ul class="nav">
+    <div class="nav">
+      <h3 v-if="userExists" id="userName">{{this.$store.state.user.name}}</h3>
       <div v-if="getToken != null">
-        <!-- NOTE: <div v-if="user == admin"> -->
-
-        <!-- </div> -->
-        <li>
-          <!-- <router-link :to="{ name: 'logout' }">Logout</router-link> -->
-          <a @click="logout">Logout</a>
-        </li>
+        <!-- TODO: <div v-if="user == admin"> -->
+        <!-- <router-link :to="{ name: 'logout' }">Logout</router-link> -->
+        <a href="#" @click="logout">Logout</a>
       </div>
       <div v-else>
-        <li>
-          <router-link :to="{ name: 'register' }">Register</router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'login' }">Login</router-link>
-        </li>
+        <router-link :to="{ name: 'login' }">Login</router-link>
+        <router-link :to="{ name: 'register' }">Register</router-link>
       </div>
-    </ul>
+    </div>
+
     <div class="container">
       <router-view></router-view>
       <!-- NOTE: O Router View faz display de todos os componentes nas rotas? -->
@@ -41,6 +35,9 @@ export default {
   computed: {
     getToken() {
       return this.$store.state.token;
+    },
+    userExists() {
+      return this.$store.state.user != null;
     }
   }
 };
@@ -74,5 +71,12 @@ export default {
 
 .nav a:active {
   color: rgb(25, 0, 255);
+}
+
+#userName {
+  /* position: absolute; */
+  /* QUESTION: How da fuck do I get this text on the left and the other nav on the right??? */
+  text-align: left;
+  padding: 20px;
 }
 </style>

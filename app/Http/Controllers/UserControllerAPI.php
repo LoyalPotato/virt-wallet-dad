@@ -29,6 +29,11 @@ class UserControllerAPI extends Controller
         //
     }
 
+    public function authenticatedUser(Request $request)
+    {
+        return $request->user();
+    }
+
     /**
      * Display the specified resource.
      *
@@ -37,11 +42,12 @@ class UserControllerAPI extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id); 
-        if ($user == null) {
-            return response()->json(['msg'=>'User not found'], 404);
-        }
-        return response()->json($user, 200);
+        // NOTE: Not sure if it's needed for the future
+        // $user = User::find($id); 
+        // if ($user == null) {
+        //     return response()->json(['msg'=>'User not found'], 404);
+        // }
+        // return response()->json($user, 200);
     }
 
     /**

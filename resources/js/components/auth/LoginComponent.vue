@@ -8,19 +8,18 @@
     <form action="#" @submit.prevent="login">
       <div class="form-group">
         <label for="email">Email:</label>
-        <input v-bind:email="email" id="email" type="text" v-model="email" required/>
+        <input v-bind:email="email" id="email" type="text" v-model="email" required />
       </div>
 
       <div class="form-group">
         <label for="password">Password:</label>
-        <input id="password" type="password" v-model="password" required/>
+        <input id="password" type="password" v-model="password" required />
       </div>
 
       <div class="form-group">
         <button type="submit" class="btn btn-primary">Login</button>
         <a class="btn btn-light" @click="cancelLogin()">Cancel</a>
       </div>
-
     </form>
 
     <!--NOTE:  @keyup.enter="event()" para enter e faz submit? -->
@@ -29,6 +28,7 @@
 
 <script>
 export default {
+  name: "LoginComponent",
   data() {
     return {
       title: "Login",
@@ -38,13 +38,20 @@ export default {
   },
   methods: {
     login() {
-      this.$store.dispatch("login", {
-        email: this.email,
-        password: this.password
-      })
-      .then(response =>{
-        this.$router.push("/home");
-      })
+      this.$store
+        .dispatch("login", {
+          email: this.email,
+          password: this.password
+        })
+        .then(response => {
+          this.$store.dispatch("getAuthUser").then(response => {
+            console.log("Success"); //TODO Trigger success warning
+            this.$router.push("/home");
+          });
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     cancelLogin() {
       this.$router.push("/");

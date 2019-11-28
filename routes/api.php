@@ -13,13 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:api')->get('/user', 'UserControllerAPI@authenticatedUser');
 Route::post('login', 'AuthControllerAPI@login');
 Route::middleware('auth:api')->post('logout','AuthControllerAPI@logout');
 Route::middleware('auth:api')->post('register','AuthControllerAPI@register');
 Route::middleware('auth:api')->get('movements', 'MovementControllerAPI@index');
-Route::middleware('auth:api')->get('users', 'UserControllerAPI@index');
-
-// Route::middleware('auth:api')->get('users','')
+// Route::middleware('auth:api')->get('users', 'UserControllerAPI@index'); DEV_ONLY needs to be checked for usefulness
