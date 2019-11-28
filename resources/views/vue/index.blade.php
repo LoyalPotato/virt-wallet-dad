@@ -4,7 +4,7 @@
 
 @section('content')
 
-<home> </home>
+<start-page></start-page>
 
 @endsection
 @section('pagescript')

@@ -41,10 +41,10 @@ export default {
       this.$store.dispatch("login", {
         email: this.email,
         password: this.password
-      });
-      
-      //NOTE: No then temos que atribuir à variavel Vuex o valor do token
-      // console.log(this.$store.state.user);
+      })
+      .then(response =>{
+        this.$router.push("/home");
+      })
     },
     cancelLogin() {
       this.$router.push("/");
