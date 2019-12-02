@@ -261,17 +261,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "LoginComponent",
+  name: "RegisterComponent",
   data: function data() {
     return {
       title: "New User Registration",
-      userName: "",
+      name: "",
       password: "",
       email: "",
       photo: "",
       nif: ""
     };
+  },
+  methods: {
+    register: function register() {
+      var _this = this;
+
+      this.$store.dispatch("register", {
+        email: this.email,
+        password: this.password,
+        name: this.name,
+        photo: this.photo,
+        nif: this.nif
+      }).then(function (response) {
+        /* this.$store.dispatch("getAuthUser").then(response => {
+          console.log("Success"); //TODO Trigger success warning
+          this.$router.push("/home"); 
+        });*/
+        _this.$router.push("/");
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    cancelRegistration: function cancelRegistration() {
+      this.$router.push("/");
+    }
   }
 });
 
@@ -1813,13 +1838,13 @@ var render = function() {
         on: {
           submit: function($event) {
             $event.preventDefault()
-            return _vm.login($event)
+            return _vm.register($event)
           }
         }
       },
       [
         _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "userName" } }, [_vm._v("Name:")]),
+          _c("label", { attrs: { for: "name" } }, [_vm._v("Name:")]),
           _vm._v(" "),
           _c("input", {
             directives: [
@@ -1830,12 +1855,7 @@ var render = function() {
                 expression: "name"
               }
             ],
-            attrs: {
-              userName: _vm.name,
-              id: "userName",
-              type: "text",
-              required: ""
-            },
+            attrs: { name: _vm.name, id: "name", type: "text", required: "" },
             domProps: { value: _vm.name },
             on: {
               input: function($event) {
@@ -1957,7 +1977,7 @@ var render = function() {
           _c(
             "button",
             { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-            [_vm._v("Login")]
+            [_vm._v("Register")]
           ),
           _vm._v(" "),
           _c(
@@ -1966,7 +1986,7 @@ var render = function() {
               staticClass: "btn btn-light",
               on: {
                 click: function($event) {
-                  return _vm.cancelLogin()
+                  return _vm.cancelRegistration()
                 }
               }
             },
@@ -18696,6 +18716,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
           reject(error);
         });
       });
+    },
+    register: function register(context) {//TODO
     }
   }
 });

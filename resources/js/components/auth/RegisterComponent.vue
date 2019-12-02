@@ -5,11 +5,12 @@
         <h1 class="card-title text-center">{{ title }}</h1>
       </div>
     </div>
-    <form action="#" @submit.prevent="login">
-        <div class="form-group">
-            <label for="userName">Name:</label>
-            <input v-bind:userName="name" id="userName" type="text" v-model="name" required />
-        </div>
+    <form action="#" @submit.prevent="register">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input v-bind:name="name" id="name" type="text" v-model="name" required />
+      </div>
+
       <div class="form-group">
         <label for="email">Email:</label>
         <input v-bind:email="email" id="email" type="email" v-model="email" required />
@@ -33,8 +34,8 @@
       </div>
 
       <div class="form-group">
-        <button type="submit" class="btn btn-primary">Login</button>
-        <a class="btn btn-light" @click="cancelLogin()">Cancel</a>
+        <button type="submit" class="btn btn-primary">Register</button>
+        <a class="btn btn-light" @click="cancelRegistration()">Cancel</a>
       </div>
     </form>
 
@@ -44,16 +45,41 @@
 
 <script>
 export default {
-name: "LoginComponent",
+name: "RegisterComponent",
   data() {
     return {
       title: "New User Registration",
-      userName: "",
+      name: "",
       password: "",
       email: "",
       photo: "",
       nif: ""
     };
+  },
+  methods: {
+      register() {
+      this.$store
+        .dispatch("register", {
+          email: this.email,
+          password: this.password,
+          name: this.name,
+          photo: this.photo,
+          nif: this.nif
+        })
+        .then(response => {
+          /* this.$store.dispatch("getAuthUser").then(response => {
+            console.log("Success"); //TODO Trigger success warning
+            this.$router.push("/home"); 
+          });*/
+          this.$router.push("/");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    cancelRegistration() {
+      this.$router.push("/");
+    }
   }
 }
 </script>
