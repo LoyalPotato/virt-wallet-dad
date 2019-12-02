@@ -16,7 +16,7 @@
         <input v-bind:email="email" id="email" type="email" v-model="email" required />
       </div>
 
-      <!--Nota: Guardar imagens na DB nao e facil, portanto o utilizador que mande um url :P-->
+      <!--Nota: Vamos ter que aceitar fotos mas para testes vai um URL-->
       <div class="form-group">
         <label for="photo">Photo:</label>
         <input v-bind:photo="photo" id="photo" type="url" v-model="photo" required />
