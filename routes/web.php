@@ -11,5 +11,9 @@
 |
 */
 
-Route::get('/','VueController@index');
+//Faz com que o router do Laravel mande todas as rotas para o vue-router
+//Provavelmente vai ter que ser modificado por causa da API. We'll see.
+Route::get('/{vue_capture?}', function () {
+    return view('vue/index');
+})->where('vue_capture', '[\/\w\.-]*');
 

@@ -54,7 +54,7 @@ class AuthControllerAPI extends Controller
             'password' => ['required', 'string', 'min:3', 'confirmed'],
         ]);
         
-        //TODO: Criar uma wallet e User check if this is correct
+        //TODO: Criar uma wallet 
         //NOTE: Aqui é preciso por mais algum campo ou eles sao auto-filled? O que é o remember token?
         // return [User::create([
         //     'name' => $request->name,

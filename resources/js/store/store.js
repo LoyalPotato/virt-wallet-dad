@@ -82,6 +82,9 @@ export const store = new Vuex.Store({
                         reject(error);
                     });
             });
+        },
+        register(context) {
+            //TODO
         }
     }
 });
