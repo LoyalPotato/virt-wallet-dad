@@ -19,7 +19,7 @@
       <!--Nota: Vamos ter que aceitar fotos mas para testes vai um URL-->
       <div class="form-group">
         <label for="photo">Photo:</label>
-        <input v-bind:photo="photo" id="photo" type="url" v-model="photo" required />
+        <input v-bind:photo="photo" id="photo" type="file" required accept="image/*"/> <!-- v-model="photo" nao suportado por type file -->
       </div>
 
       <div class="form-group">
@@ -58,7 +58,7 @@ name: "RegisterComponent",
   },
   methods: {
       register() {
-        if(validateForm()){
+
           this.$store
             .dispatch("register", {
               email: this.email,
@@ -76,21 +76,14 @@ name: "RegisterComponent",
             .catch(function(error) {
               console.log(error); //TODO: Error page?
             });
-        }
+
     },
 
     cancelRegistration() {
       this.$router.push("/");
     },
 
-    validateForm() {
-      if (this.nif.length !== 9) {
-        this.errors.push('NIF must have 9 digits.');
-        return false;
-      }
 
-      return true;
-    }
   }
 }
 </script>
