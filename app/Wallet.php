@@ -8,6 +8,8 @@ class Wallet extends Model
 {
     protected $table = 'wallets';
 
+    protected $guarded = [];
+    
     public function movements()
     {
         return $this->hasMany('App\Movement');
