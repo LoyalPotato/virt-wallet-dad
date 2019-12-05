@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\WalletResource;
 use App\Wallet;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class WalletControllerAPI extends Controller
      */
     public function index()
     {
-        //
+        //TEST Se da para retornar all ou se temos que fazer por paginaçao
+        return WalletResource::collection(Wallet::all());
     }
 
     /**
