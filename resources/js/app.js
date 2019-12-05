@@ -1,13 +1,13 @@
 /*jshint esversion: 6 */
 import Vue from 'vue';
-import { store } from "./store/store";
-import VueRouter from "vue-router";
-import { routes } from "./routes";
+import { store } from './store/store';
+import VueRouter from 'vue-router';
+import { routes } from './routes';
 import MainComponent from './components/layouts/MainComponent.vue';
 
-Vue.component("main-comp", MainComponent);
+Vue.component('main-comp', MainComponent);
 
-window.Vue = require("vue");
+window.Vue = require('vue');
 Vue.use(VueRouter);
 
 const app = new Vue({
@@ -16,5 +16,3 @@ const app = new Vue({
     el: "#app",
     components: {MainComponent},
 });
-
-
