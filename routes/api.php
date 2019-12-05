@@ -18,5 +18,4 @@ Route::post('login', 'AuthControllerAPI@login');
 Route::middleware('auth:api')->post('logout','AuthControllerAPI@logout');
 Route::post('register','AuthControllerAPI@register');
 Route::middleware('auth:api')->get('movements', 'MovementControllerAPI@index');
-Route::get('wallets', 'WalletControllerAPI@index');
 // Route::middleware('auth:api')->get('users', 'UserControllerAPI@index'); DEV_ONLY needs to be checked for usefulness

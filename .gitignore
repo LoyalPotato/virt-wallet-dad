@@ -13,3 +13,4 @@ yarn-error.log
 database/seeds/fotos/*
 public/js/*
 TO-DO
+/public/js/app.js

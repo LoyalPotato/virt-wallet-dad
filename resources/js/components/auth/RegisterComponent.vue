@@ -71,7 +71,6 @@ name: "RegisterComponent",
             console.log("Success"); //TODO Trigger success warning
             this.$router.push("/home"); //TODO user verification?
           });
-          this.$router.push("/"); //NOta: duplicate?
         })
         .catch(function(error) {
           console.log(error); //TODO: Error page?
