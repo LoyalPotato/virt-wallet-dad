@@ -16252,13 +16252,17 @@ __webpack_require__.r(__webpack_exports__);
         photo: this.photo,
         nif: this.nif
       }).then(function (response) {
-        /* this.$store.dispatch("getAuthUser").then(response => {
+        _this.$store.dispatch("registerUser").then(function (response) {
           console.log("Success"); //TODO Trigger success warning
-          this.$router.push("/home"); 
-        });*/
-        _this.$router.push("/");
+
+          _this.$router.push("/home"); //TODO user verification?
+
+        });
+
+        _this.$router.push("/"); //NOta: duplicate?
+
       })["catch"](function (error) {
-        console.log(error);
+        console.log(error); //TODO: Error page?
       });
     },
     cancelRegistration: function cancelRegistration() {
@@ -34215,7 +34219,7 @@ var app = new Vue({
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("main-comp", _components_layouts_MainComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('main-comp', _components_layouts_MainComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
@@ -34224,11 +34228,12 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     routes: _routes__WEBPACK_IMPORTED_MODULE_3__["routes"]
   }),
   store: _store_store__WEBPACK_IMPORTED_MODULE_1__["store"],
-  el: "#app",
+  el: '#app',
   components: {
     MainComponent: _components_layouts_MainComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   }
 });
+document.window();
 
 /***/ }),
 
@@ -34802,8 +34807,8 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    user: sessionStorage.getItem("authed_user") || null,
-    token: sessionStorage.getItem("access_token") || null
+    user: sessionStorage.getItem('authed_user') || null,
+    token: sessionStorage.getItem('access_token') || null
   },
   mutations: {
     assignUser: function assignUser(state, user) {
@@ -34819,12 +34824,12 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   actions: {
     login: function login(context, credentials) {
       return new Promise(function (resolve, reject) {
-        axios.post("/api/login", {
+        axios.post('/api/login', {
           email: credentials.email,
           password: credentials.password
         }).then(function (response) {
-          localStorage.setItem("access_token", response.data.access_token);
-          context.commit("assignToken", response.data.access_token);
+          localStorage.setItem('access_token', response.data.access_token);
+          context.commit('assignToken', response.data.access_token);
           resolve(response);
         })["catch"](function (error) {
           reject(error);
@@ -34835,18 +34840,18 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       var _this = this;
 
       return new Promise(function (resolve, reject) {
-        axios.post("/api/logout", {
-          key: "value"
+        axios.post('/api/logout', {
+          key: 'value'
         }, {
           headers: {
-            Authorization: "Bearer " + _this.state.token
+            Authorization: 'Bearer ' + _this.state.token
           }
         }).then(function (response) {
-          context.commit("assignToken", null);
-          localStorage.removeItem("access_token");
-          context.commit("assignUser", null);
-          localStorage.removeItem("authed_user");
-          console.log("Logged out"); //DEV_ONLY
+          context.commit('assignToken', null);
+          localStorage.removeItem('access_token');
+          context.commit('assignUser', null);
+          localStorage.removeItem('authed_user');
+          console.log('Logged out'); //DEV_ONLY
 
           resolve(response);
         })["catch"](function (error) {
@@ -34860,20 +34865,20 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       var _this2 = this;
 
       return new Promise(function (resolve, reject) {
-        axios.get("/api/user/", {
+        axios.get('/api/user/', {
           headers: {
-            Authorization: "Bearer " + _this2.state.token
+            Authorization: 'Bearer ' + _this2.state.token
           }
         }).then(function (response) {
-          context.commit("assignUser", response.data);
-          localStorage.setItem("authed_user", response.data);
+          context.commit('assignUser', response.data);
+          localStorage.setItem('authed_user', response.data);
           resolve(response);
         })["catch"](function (error) {
           reject(error);
         });
       });
     },
-    register: function register(context) {//TODO
+    registerUser: function registerUser(context) {//TODO
     }
   }
 });
