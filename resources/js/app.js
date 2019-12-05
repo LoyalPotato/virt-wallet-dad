@@ -1,23 +1,21 @@
-/*jshint esversion: 6 */
-
-require("./bootstrap");
-window.Vue = require("vue");
+import Vue from 'vue';
 import { store } from "./store/store";
 import VueRouter from "vue-router";
 import { routes } from "./routes";
+import MainComponent from './components/layouts/MainComponent.vue';
 
+Vue.component("main-comp", MainComponent);
+
+window.Vue = require("vue");
 Vue.use(VueRouter);
 
-
-
-
-const router = new VueRouter({
-    routes: routes,
-});
-
-
 const app = new Vue({
-    router : router,
+    router: new VueRouter({mode: 'history', routes}),
     store : store,
     el: "#app",
+    components: {
+        MainComponent
+    }
 });
+
+

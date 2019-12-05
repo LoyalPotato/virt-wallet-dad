@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
+use App\User;
 use Illuminate\Http\Request;
 
 class UserControllerAPI extends Controller
@@ -13,7 +15,7 @@ class UserControllerAPI extends Controller
      */
     public function index()
     {
-        //
+        return UserResource::collection(User::paginate(15));
     }
 
     /**
@@ -27,6 +29,11 @@ class UserControllerAPI extends Controller
         //
     }
 
+    public function authenticatedUser(Request $request)
+    {
+        return $request->user();
+    }
+
     /**
      * Display the specified resource.
      *
@@ -35,7 +42,12 @@ class UserControllerAPI extends Controller
      */
     public function show($id)
     {
-        //
+        // NOTE: Not sure if it's needed for the future
+        // $user = User::find($id); 
+        // if ($user == null) {
+        //     return response()->json(['msg'=>'User not found'], 404);
+        // }
+        // return response()->json($user, 200);
     }
 
     /**

@@ -1,36 +1,90 @@
 /*jshint esversion: 6 */
-import Vue from 'vue';
+import Vue from "vue";
 import Vuex from "vuex";
+
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        user: null,
-        token: sessionStorage.getItem('access_token') || null 
+        user: sessionStorage.getItem("authed_user") || null,
+        token: sessionStorage.getItem("access_token") || null,
     },
     mutations: {
         assignUser(state, user) {
             state.user = user;
         },
         assignToken(state, token) {
-            state.userToken = token;
+            state.token = token;
+        },
+        setMsg(state, msg) {
+            state.resMsg = msg;
         }
     },
     actions: {
-        login(context, credentials){
-            axios.post("/api/login",{email: credentials.email, password: credentials.password})
-            .then(function(response){
-            const token = response.data.access_token;
-            localStorage.setItem('access_token', token);
-            
-            context.commit('assignToken', token);
-            //TODO: Faço um endpoint na api para ir buscar qual é o user que se autenticou e atribuo aqui?
-            })
-            .catch(function(error){
-            console.log(error);
-            
+        login(context, credentials) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post("/api/login", {
+                        email: credentials.email,
+                        password: credentials.password
+                    })
+                    .then(function(response) {
+                        localStorage.setItem("access_token", response.data.access_token);
+                        context.commit("assignToken", response.data.access_token);
+                        resolve(response);
+                    })
+                    .catch(function(error) {
+                        reject(error);
+                    });
             });
         },
+        logout(context) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post(
+                        "/api/logout",
+                        { key: "value" },
+                        {
+                            headers: {
+                                Authorization: "Bearer " + this.state.token
+                            }
+                        }
+                    )
+                    .then(function(response) {
+                        context.commit("assignToken", null);
+                        localStorage.removeItem("access_token");
+                        context.commit("assignUser", null);
+                        localStorage.removeItem("authed_user");
+                        console.log("Logged out"); //DEV_ONLY
+                        resolve(response);
+                    })
+                    .catch(function(error) {
+                        console.log(error); //DEV_ONLY
+                        reject(error);
+                    });
+            });
+        },
+        getAuthUser(context) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get("/api/user/", {
+                        headers: {
+                            Authorization: "Bearer " + this.state.token
+                        }
+                    })
+                    .then(function(response) {
+                        context.commit("assignUser", response.data);
+                        localStorage.setItem("authed_user", response.data);
+                        resolve(response);
+                    })
+                    .catch(function(error) {
+                        reject(error);
+                    });
+            });
+        },
+        register(context) {
+            //TODO
+        }
     }
 });

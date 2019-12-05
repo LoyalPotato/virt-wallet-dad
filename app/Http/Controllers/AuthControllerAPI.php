@@ -32,7 +32,7 @@ class AuthControllerAPI extends Controller
         } else {
             return response()->json(
                 ['msg' => 'User credentials are invalid'],
-                $responseCode
+                401
             );
         }
     }
@@ -52,6 +52,7 @@ class AuthControllerAPI extends Controller
             'email' => ['required', 'alpha', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:3', 'confirmed'],
         ]);
+        
         //TODO: Criar uma wallet 
         //NOTE: Aqui é preciso por mais algum campo ou eles sao auto-filled? O que é o remember token?
         return User::create([
