@@ -52,6 +52,7 @@ class AuthControllerAPI extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'alpha', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:3', 'confirmed'],
+            'nif' => ['required', 'numeric', 'digits:9'],
         ]);
 
         //TODO: Criar uma wallet

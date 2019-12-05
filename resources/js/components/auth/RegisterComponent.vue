@@ -24,7 +24,7 @@
 
       <div class="form-group">
         <label for="nif">Nif:</label>
-        <input v-bind:nif="nif" id="nif" type="text" v-model="nif" required />
+        <input v-bind:nif="nif" id="nif" type="text" v-model.number="nif" required maxlength="9" pattern="[0-9]{9}" title="9 digit number"/>
       </div>
 
 
@@ -54,30 +54,42 @@ name: "RegisterComponent",
       email: "",
       photo: "",
       nif: ""
-    };
+    }
   },
   methods: {
       register() {
-      this.$store
-        .dispatch("register", {
-          email: this.email,
-          password: this.password,
-          name: this.name,
-          photo: this.photo,
-          nif: this.nif
-        })
-        .then(response => {
-          this.$store.dispatch("registerUser").then(response => {
-            console.log("Success"); //TODO Trigger success warning
-            this.$router.push("/home"); //TODO user verification?
-          });
-        })
-        .catch(function(error) {
-          console.log(error); //TODO: Error page?
-        });
+        if(validateForm()){
+          this.$store
+            .dispatch("register", {
+              email: this.email,
+              password: this.password,
+              name: this.name,
+              photo: this.photo,
+              nif: this.nif
+            })
+            .then(response => {
+              this.$store.dispatch("registerUser").then(response => {
+                console.log("Success"); //TODO Trigger success warning
+                this.$router.push("/home"); //TODO user verification?
+              });
+            })
+            .catch(function(error) {
+              console.log(error); //TODO: Error page?
+            });
+        }
     },
+
     cancelRegistration() {
       this.$router.push("/");
+    },
+
+    validateForm() {
+      if (this.nif.length !== 9) {
+        this.errors.push('NIF must have 9 digits.');
+        return false;
+      }
+
+      return true;
     }
   }
 }

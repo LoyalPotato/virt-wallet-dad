@@ -11,8 +11,11 @@ window.Vue = require('vue');
 Vue.use(VueRouter);
 
 const app = new Vue({
-    router: new VueRouter({mode: 'history', routes}),
-    store : store,
-    el: "#app",
-    components: {MainComponent},
+	router: new VueRouter({ mode: 'history', routes }),
+	store: store,
+	el: '#app',
+	components: { MainComponent },
+	data: {
+		errors: []
+	}
 });
