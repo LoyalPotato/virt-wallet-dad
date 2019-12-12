@@ -7,6 +7,7 @@ define('CLIENT_ID', '2');
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use  App\Http\Requests\StoreUserRequest;
 use App\User;
 use App\Wallet;
 
@@ -47,15 +48,10 @@ class AuthControllerAPI extends Controller
 
     public function register(StoreUserRequest $request)
     {
-        //TODO: Alter to required fields
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'alpha', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:3', 'confirmed'],
-            'nif' => ['required', 'numeric', 'digits:9'],
-        ]);
-
-        //TODO: Criar uma wallet
+        //TODO: Alter to required fields @StoreUserRequest file
+        $validated = $request->validated();
+        
+        $newUser = User::create($validated);
         //NOTE: Aqui é preciso por mais algum campo ou eles sao auto-filled? O que é o remember token?
         return [$newUser
             // QUESTION: Como é que posso ir buscar o id deste user registado? Ou funciona com o email?
