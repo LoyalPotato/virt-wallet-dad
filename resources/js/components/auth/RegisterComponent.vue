@@ -16,7 +16,6 @@
         <input v-bind:email="email" id="email" type="email" v-model="email" required />
       </div>
 
-      <!--Nota: Vamos ter que aceitar fotos mas para testes vai um URL-->
       <div class="form-group">
         <label for="photo">Photo:</label>
         <input v-bind:photo="photo" id="photo" type="file" required accept="image/*"/> <!-- v-model="photo" nao suportado por type file -->
