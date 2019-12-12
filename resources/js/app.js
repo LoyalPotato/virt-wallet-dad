@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+require('./bootstrap');
 import Vue from 'vue';
 import { store } from './store/store';
 import VueRouter from 'vue-router';

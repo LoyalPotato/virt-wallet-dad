@@ -1,47 +1,67 @@
 <template>
-  <div>
-    <div class="card">
-      <div class="card-body">
-        <h1 class="card-title text-center">{{ title }}</h1>
-      </div>
+<div class="container">
+        <div class="card shadow-lg o-hidden border-0 my-5">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-flex">
+                        <div class="flex-grow-1 bg-register-image" style="background-image: url(&quot;assets/img/dogs/image2.jpeg&quot;);"></div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h4 class="text-dark mb-4">Create an Account!</h4>
+                            </div>
+                            <form class="user">
+                                <div class="form-group">
+                                    <label class="" for="photo">Photo:</label>
+                                    <el-upload
+                                    name="photo"
+                                    class="avatar-uploader form-control form-control-user"
+                                    action="/"
+                                    :show-file-list="false"
+                                    :multiple="false"
+                                    :on-success="handlePhotoSuccess"
+                                    :before-upload="beforePhotoUpload"
+                                    >
+                                    <img v-if="photoURL" :src="photoURL" class="avatar">
+                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                    </el-upload>
+                                </div>
+
+                                <div class="form-group">
+                                    <input class="form-control form-control-user" type="text" id="name" placeholder="Name" v-bind:name="name">
+                                </div>
+
+                                <div class="form-group"><input class="form-control form-control-user" type="email" id="email" aria-describedby="emailHelp" placeholder="Email Address" v-bind:email="email"></div>
+
+                                <div class="form-group"><input class="form-control form-control-user" placeholder="NIF" v-bind:nif="nif" id="nif" type="text" v-model.number="nif" required maxlength="9" pattern="[0-9]{9}" title="9 digit number"></div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="password" id="password" placeholder="Password" v-model="password" required></div>
+                                    <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="exampleRepeatPasswordInput" placeholder="Repeat Password" name="password_repeat"></div>
+                                </div>
+                                <div class="btn-group btn-group-justified">
+                                  <div class="btn-group">
+                                    <button class="btn btn-primary text-white btn-user" type="submit">Register Account</button>
+                                  </div>
+
+                                  <div class="btn-group">
+                                    <a class="btn btn-danger text-white btn-user" @click="cancelRegistration()">Cancel</a>
+                                  </div>
+                                </div>
+
+                                <!-- <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i class="fab fa-google"></i>&nbsp; Register with Google</a><a class="btn btn-primary btn-block text-white btn-facebook btn-user" role="button"><i class="fab fa-facebook-f"></i>&nbsp; Register with Facebook</a>
+                                <hr> -->
+                            </form>
+                            <!-- <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
+                            <div class="text-center"><a class="small" href="login.html">Already have an account? Login!</a></div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <form action="#" @submit.prevent="register">
-      <div class="form-group">
-        <label for="name">Name:</label>
-        <input v-bind:name="name" id="name" type="text" v-model="name" required />
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input v-bind:email="email" id="email" type="email" v-model="email" required />
-      </div>
-
-      <div class="form-group">
-        <label for="photo">Photo:</label>
-        <input v-bind:photo="photo" id="photo" type="file" required accept="image/*"/> <!-- v-model="photo" nao suportado por type file -->
-      </div>
-
-      <div class="form-group">
-        <label for="nif">Nif:</label>
-        <input v-bind:nif="nif" id="nif" type="text" v-model.number="nif" required maxlength="9" pattern="[0-9]{9}" title="9 digit number"/>
-      </div>
-
-
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input id="password" type="password" v-model="password" required />
-      </div>
-
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary">Register</button>
-        <a class="btn btn-light" @click="cancelRegistration()">Cancel</a>
-      </div>
-    </form>
-
-    <!--NOTE:  @keyup.enter="event()" para enter e faz submit? -->
-  </div>
 </template>
-
 <script>
 export default {
 name: "RegisterComponent",
@@ -51,7 +71,7 @@ name: "RegisterComponent",
       name: "",
       password: "",
       email: "",
-      photo: "",
+      photoURL: "",
       nif: ""
     }
   },
@@ -59,11 +79,11 @@ name: "RegisterComponent",
       register() {
 
           this.$store
-            .dispatch("register", {
+            .dispatch("registerUser", {
               email: this.email,
               password: this.password,
               name: this.name,
-              photo: this.photo,
+              photoURL: this.photoURL,
               nif: this.nif
             })
             .then(response => {
@@ -82,11 +102,24 @@ name: "RegisterComponent",
       this.$router.push("/");
     },
 
+    beforePhotoUpload (file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('Avatar picture must be JPG format!');
+        }
+        if (!isLt2M) {
+          this.$message.error('Avatar picture size can not exceed 2MB!');
+        }
+        return isJPG && isLt2M;
+    },
+
+    handlePhotoSuccess (res, file) {
+      //TODO
+      this.imageUrl = URL.createObjectURL(file.raw);
+    }
 
   }
 }
 </script>
-
-<style>
-
-</style>
