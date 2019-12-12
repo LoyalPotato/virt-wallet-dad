@@ -9,7 +9,7 @@ import Toasted from "vue-toasted";
 
 const router = new VueRouter({ mode: "history", routes });
 
-Vue.component("main-comp", MainComponent);
+Vue.component('main-comp', MainComponent);
 
 window.Vue = require("vue");
 

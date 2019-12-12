@@ -21,12 +21,12 @@
         <label for="photo">Photo:</label>
         <input v-bind:photo="photo" id="photo" type="url" v-model="photo" required />
       </div>
-      
+
       <div class="form-group">
         <label for="nif">Nif:</label>
         <input v-bind:nif="nif" id="nif" type="text" v-model="nif" required />
       </div>
-      
+
 
       <div class="form-group">
         <label for="password">Password:</label>
@@ -67,14 +67,14 @@ name: "RegisterComponent",
           nif: this.nif
         })
         .then(response => {
-          /* this.$store.dispatch("getAuthUser").then(response => {
+          this.$store.dispatch("registerUser").then(response => {
             console.log("Success"); //TODO Trigger success warning
-            this.$router.push("/home"); 
-          });*/
-          this.$router.push("/");
+            this.$router.push("/home"); //TODO user verification?
+          });
+          this.$router.push("/"); //NOta: duplicate?
         })
         .catch(function(error) {
-          console.log(error);
+          console.log(error); //TODO: Error page?
         });
     },
     cancelRegistration() {

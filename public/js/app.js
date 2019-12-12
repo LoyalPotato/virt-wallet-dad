@@ -2460,13 +2460,17 @@ __webpack_require__.r(__webpack_exports__);
         photo: this.photo,
         nif: this.nif
       }).then(function (response) {
-        /* this.$store.dispatch("getAuthUser").then(response => {
+        _this.$store.dispatch("registerUser").then(function (response) {
           console.log("Success"); //TODO Trigger success warning
-          this.$router.push("/home"); 
-        });*/
-        _this.$router.push("/");
+
+          _this.$router.push("/home"); //TODO user verification?
+
+        });
+
+        _this.$router.push("/"); //NOta: duplicate?
+
       })["catch"](function (error) {
-        console.log(error);
+        console.log(error); //TODO: Error page?
       });
     },
     cancelRegistration: function cancelRegistration() {
@@ -72300,7 +72304,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   mode: "history",
   routes: _routes__WEBPACK_IMPORTED_MODULE_3__["routes"]
 });
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("main-comp", _components_layouts_MainComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('main-comp', _components_layouts_MainComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_toasted__WEBPACK_IMPORTED_MODULE_5___default.a, {
