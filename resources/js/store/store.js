@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        user: sessionStorage.getItem("authed_user") || null,
+        user: JSON.parse(sessionStorage.getItem("authed_user")) || null,
         token: sessionStorage.getItem("access_token") || null,
     },
     mutations: {
@@ -17,9 +17,6 @@ export const store = new Vuex.Store({
         assignToken(state, token) {
             state.token = token;
         },
-        setMsg(state, msg) {
-            state.resMsg = msg;
-        }
     },
     actions: {
         login(context, credentials) {
@@ -30,7 +27,7 @@ export const store = new Vuex.Store({
                         password: credentials.password
                     })
                     .then(function(response) {
-                        localStorage.setItem("access_token", response.data.access_token);
+                        sessionStorage.setItem("access_token", response.data.access_token);
                         context.commit("assignToken", response.data.access_token);
                         resolve(response);
                     })
@@ -53,14 +50,13 @@ export const store = new Vuex.Store({
                     )
                     .then(function(response) {
                         context.commit("assignToken", null);
-                        localStorage.removeItem("access_token");
+                        sessionStorage.removeItem("access_token");
                         context.commit("assignUser", null);
-                        localStorage.removeItem("authed_user");
+                        sessionStorage.removeItem("authed_user");
                         console.log("Logged out"); //DEV_ONLY
                         resolve(response);
                     })
                     .catch(function(error) {
-                        console.log(error); //DEV_ONLY
                         reject(error);
                     });
             });
@@ -75,7 +71,7 @@ export const store = new Vuex.Store({
                     })
                     .then(function(response) {
                         context.commit("assignUser", response.data);
-                        localStorage.setItem("authed_user", response.data);
+                        sessionStorage.setItem("authed_user", JSON.stringify(response.data));
                         resolve(response);
                     })
                     .catch(function(error) {

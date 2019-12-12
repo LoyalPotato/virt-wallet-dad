@@ -18,6 +18,7 @@ class WalletResource extends JsonResource
             'id' => $this->id ,
             'email' => $this->email,
             'balance' => $this->balance ,
+            // 'created_at'=> $this->created_at DEV_ONLY
          ];
     }
 }
