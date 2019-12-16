@@ -8,7 +8,7 @@
                             <div class="text-center">
                                 <h4 class="text-dark mb-4">Create an Account!</h4>
                             </div>
-                            <form class="user">
+                            <form class="user" v-on:submit.prevent="register">
                                 <div class="form-group">
                                     <!-- <label class="" for="photo">Photo:</label>
                                     <input type="file"> -->
@@ -82,6 +82,8 @@ name: "RegisterComponent",
   },
   methods: {
     register() {
+      console.log("Entered register");
+
       this.$store
         .dispatch("registerUser", {
           email: this.email,
