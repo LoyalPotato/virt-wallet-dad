@@ -3,9 +3,6 @@
         <div class="card shadow-lg o-hidden border-0 my-5">
             <div class="card-body p-0">
                 <div class="row">
-                    <div class="col-lg-5 d-none d-lg-flex">
-                        <div class="flex-grow-1 bg-register-image" style="background-image: url(&quot;assets/img/dogs/image2.jpeg&quot;);"></div>
-                    </div>
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
@@ -14,14 +11,13 @@
                             <form class="user">
                                 <div class="form-group">
                                     <label class="" for="photo">Photo:</label>
-                                    <el-upload
+                                    <el-upload action="/" list-type="picture-card"
                                     name="photo"
                                     class="avatar-uploader form-control form-control-user"
-                                    action="/"
-                                    :show-file-list="false"
-                                    :multiple="false"
-                                    :on-success="handlePhotoSuccess"
-                                    :before-upload="beforePhotoUpload"
+                                    :on-preview="handlePictureCardPreview"
+                                    :on-change="updateImageList"
+                                    :auto-upload="false"
+                                    multiple="false"
                                     >
                                     <img v-if="photoURL" :src="photoURL" class="avatar">
                                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -50,7 +46,7 @@
                                   </div>
                                 </div>
 
-                                <!-- <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i class="fab fa-google"></i>&nbsp; Register with Google</a><a class="btn btn-primary btn-block text-white btn-facebook btn-user" role="button"><i class="fab fa-facebook-f"></i>&nbsp; Register with Facebook</a>
+                                <!-- <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i class="fab fa-google"></i>; Register with Google</a><a class="btn btn-primary btn-block text-white btn-facebook btn-user" role="button"><i class="fab fa-facebook-f"></i>; Register with Facebook</a>
                                 <hr> -->
                             </form>
                             <!-- <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
@@ -108,16 +104,22 @@ name: "RegisterComponent",
 
         if (!isJPG) {
           this.$message.error('Avatar picture must be JPG format!');
+          console.log("JPG Format er");
+
         }
         if (!isLt2M) {
           this.$message.error('Avatar picture size can not exceed 2MB!');
+          console.log("img size er");
+
         }
         return isJPG && isLt2M;
     },
 
     handlePhotoSuccess (res, file) {
       //TODO
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.photoURL = window.URL.createObjectURL(file.raw);
+      console.log("file received");
+
     }
 
   }
