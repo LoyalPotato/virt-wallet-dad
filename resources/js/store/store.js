@@ -88,14 +88,13 @@ export const store = new Vuex.Store({
 					.post('/api/register', {
 						name: data.name,
 						email: data.email,
-						password: credentials.password,
+						password: data.password,
 						photo: data.photo,
 						nif: data.nif
 					})
 					.then(function(response) {
-						/* localStorage.setItem('access_token', response.data.access_token);
-						context.commit('assignToken', response.data.access_token); */
-						//TODO?
+						localStorage.setItem('access_token', response.data.access_token);
+						context.commit('assignToken', response.data.access_token);
 						resolve(response);
 					})
 					.catch(function(error) {
