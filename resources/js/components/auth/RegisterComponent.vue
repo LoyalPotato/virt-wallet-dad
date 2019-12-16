@@ -3,25 +3,29 @@
         <div class="card shadow-lg o-hidden border-0 my-5">
             <div class="card-body p-0">
                 <div class="row">
-                    <div class="col-lg-7">
+                    <div class="col-lg-10">
                         <div class="p-5">
                             <div class="text-center">
                                 <h4 class="text-dark mb-4">Create an Account!</h4>
                             </div>
                             <form class="user">
                                 <div class="form-group">
-                                    <label class="" for="photo">Photo:</label>
-                                    <el-upload action="/" list-type="picture-card"
-                                    name="photo"
-                                    class="avatar-uploader form-control form-control-user"
-                                    :on-preview="handlePictureCardPreview"
-                                    :on-change="updateImageList"
-                                    :auto-upload="false"
-                                    multiple="false"
-                                    >
-                                    <img v-if="photoURL" :src="photoURL" class="avatar">
-                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                    </el-upload>
+                                    <!-- <label class="" for="photo">Photo:</label>
+                                    <input type="file"> -->
+                                    <picture-input
+                                      ref="pictureInput"
+                                      accept="image/jpeg,image/png"
+                                      size="2"
+                                      :removable="true"
+                                      button-class="btn"
+                                      :custom-strings="{
+                                        upload: 'Something wen\'t wrong',
+                                        drag: 'Click or drag to set your profile photo.',
+                                        fileSize: 'The file size exceeds the limit', // Text only
+                                        fileType: 'This file type is not supported.', // Text only
+                                      }"
+                                      @change="onChange">
+                                    </picture-input>
                                 </div>
 
                                 <div class="form-group">
@@ -59,6 +63,8 @@
     </div>
 </template>
 <script>
+import PictureInput from 'vue-picture-input'
+
 export default {
 name: "RegisterComponent",
   data() {
@@ -67,30 +73,32 @@ name: "RegisterComponent",
       name: "",
       password: "",
       email: "",
-      photoURL: "",
+      photo: "",
       nif: ""
     }
   },
+  components: {
+    PictureInput
+  },
   methods: {
-      register() {
-
-          this.$store
-            .dispatch("registerUser", {
-              email: this.email,
-              password: this.password,
-              name: this.name,
-              photoURL: this.photoURL,
-              nif: this.nif
-            })
-            .then(response => {
-              this.$store.dispatch("registerUser").then(response => {
-                console.log("Success"); //TODO Trigger success warning
-                this.$router.push("/home"); //TODO user verification?
-              });
-            })
-            .catch(function(error) {
-              console.log(error); //TODO: Error page?
-            });
+    register() {
+      this.$store
+        .dispatch("registerUser", {
+          email: this.email,
+          password: this.password,
+          name: this.name,
+          photo: this.photo,
+          nif: this.nif
+        })
+        .then(response => {
+          this.$store.dispatch("registerUser").then(response => {
+            console.log("Success"); //TODO Trigger success warning
+            this.$router.push("/home"); //TODO user verification?
+          });
+        })
+        .catch(function(error) {
+          console.log(error); //TODO: Error page?
+        });
 
     },
 
@@ -98,30 +106,18 @@ name: "RegisterComponent",
       this.$router.push("/");
     },
 
-    beforePhotoUpload (file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('Avatar picture must be JPG format!');
-          console.log("JPG Format er");
-
-        }
-        if (!isLt2M) {
-          this.$message.error('Avatar picture size can not exceed 2MB!');
-          console.log("img size er");
-
-        }
-        return isJPG && isLt2M;
-    },
-
-    handlePhotoSuccess (res, file) {
-      //TODO
-      this.photoURL = window.URL.createObjectURL(file.raw);
-      console.log("file received");
-
+    onChange (image) {
+      console.log('New picture selected!')
+      if (image) {
+        console.log('Picture loaded.')
+        this.photo = image
+      } else {
+        console.log('FileReader API not supported: use the <form>, Luke!')
+      }
     }
+}
 
-  }
+
+
 }
 </script>
