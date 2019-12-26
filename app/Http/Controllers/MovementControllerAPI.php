@@ -62,4 +62,8 @@ class MovementControllerAPI extends Controller
     {
         //
     }
+
+    /* public function test () {
+        return MovementResource::collection(Movement::paginate(15));
+    } */
 }
