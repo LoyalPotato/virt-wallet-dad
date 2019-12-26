@@ -10,11 +10,9 @@
                             </div>
                             <form class="user" v-on:submit.prevent="register">
                                 <div class="form-group">
-                                    <!-- <label class="" for="photo">Photo:</label>
-                                    <input type="file"> -->
                                     <picture-input
                                       ref="pictureInput"
-                                      accept="image/jpeg,image/png"
+                                      accept="image/*"
                                       size="2"
                                       :removable="true"
                                       button-class="btn"
@@ -29,16 +27,24 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <input class="form-control form-control-user" type="text" id="name" placeholder="Name" v-bind:name="name">
+                                    <input class="form-control form-control-user" type="text" id="name" placeholder="Name" v-bind:name="name" required>
                                 </div>
 
-                                <div class="form-group"><input class="form-control form-control-user" type="email" id="email" aria-describedby="emailHelp" placeholder="Email Address" v-bind:email="email"></div>
+                                <div class="form-group">
+                                  <input class="form-control form-control-user" type="email" id="email" aria-describedby="emailHelp" placeholder="Email Address" v-bind:email="email" required>
+                                </div>
 
-                                <div class="form-group"><input class="form-control form-control-user" placeholder="NIF" v-bind:nif="nif" id="nif" type="text" v-model.number="nif" required maxlength="9" pattern="[0-9]{9}" title="9 digit number"></div>
+                                <div class="form-group">
+                                  <input class="form-control form-control-user" placeholder="NIF" v-bind:nif="nif" id="nif" type="text" v-model.number="nif" required maxlength="9" pattern="[0-9]{9}" title="9 digit number">
+                                </div>
 
                                 <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="password" id="password" placeholder="Password" v-model="password" required></div>
-                                    <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="exampleRepeatPasswordInput" placeholder="Repeat Password" name="password_repeat"></div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                      <input class="form-control form-control-user" type="password" id="password" placeholder="Password" v-model="password" required>
+                                      </div>
+                                    <div class="col-sm-6">
+                                      <input class="form-control form-control-user" type="password" id="password_confirmation" placeholder="Repeat Password" v-model="password_confirmation" name="password_confirmation" required>
+                                      </div>
                                 </div>
                                 <div class="btn-group btn-group-justified">
                                   <div class="btn-group">
@@ -73,6 +79,7 @@ name: "RegisterComponent",
       name: "",
       password: "",
       email: "",
+      password_confirmation: "",
       photo: "",
       nif: ""
     }
@@ -88,6 +95,7 @@ name: "RegisterComponent",
         .dispatch("registerUser", {
           email: this.email,
           password: this.password,
+          password_confirmation: this.password_confirmation,
           name: this.name,
           photo: this.photo,
           nif: this.nif
@@ -112,7 +120,8 @@ name: "RegisterComponent",
       console.log('New picture selected!')
       if (image) {
         console.log('Picture loaded.')
-        this.photo = image
+        this.photo = this.$refs.pictureInput.file;
+
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!')
       }
