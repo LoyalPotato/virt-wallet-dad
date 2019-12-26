@@ -82,19 +82,20 @@ export const store = new Vuex.Store({
 					});
 			});
 		},
-		registerUser(context, data) {
+		registerUser(data) {
 			return new Promise((resolve, reject) => {
 				axios
-					.post('/api/register', {
+					.post('/api/register/', {
 						name: data.name,
 						email: data.email,
 						password: data.password,
+						password_confirmation: data.password_confirmation,
 						photo: data.photo,
 						nif: data.nif
 					})
 					.then(function(response) {
-						localStorage.setItem('access_token', response.data.access_token);
-						context.commit('assignToken', response.data.access_token);
+						/* localStorage.setItem('access_token', response.data.access_token);
+						context.commit('assignToken', response.data.access_token); */
 						resolve(response);
 					})
 					.catch(function(error) {

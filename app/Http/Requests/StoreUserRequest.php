@@ -24,12 +24,14 @@ class StoreUserRequest extends FormRequest
      */
     public function rules()
     {
-        //TODO: Fill rest
+
         return
             [
                 'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'alpha', 'email', 'max:255', 'unique:users'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:3', 'confirmed'],
+                'nif' => ['required', 'numeric', 'digits:9'],
+                'photo' => ['required', /* 'image', 'mimes:jpg,jpeg,png,gif' */]
             ];
     }
 }
