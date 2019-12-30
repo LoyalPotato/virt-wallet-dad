@@ -86,10 +86,10 @@ export const store = new Vuex.Store({
 			return new Promise((resolve, reject) => {
 				axios
 					.post('/api/register/', {
-						name: data.name,
 						email: data.email,
 						password: data.password,
 						password_confirmation: data.password_confirmation,
+						name: data.name,
 						photo: data.photo,
 						nif: data.nif
 					})

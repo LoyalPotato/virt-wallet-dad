@@ -107,6 +107,8 @@ name: "RegisterComponent",
           });
         })
         .catch(function(error) {
+
+          console.log("Error registering user.");
           console.log(error); //TODO: Error page?
         });
 
