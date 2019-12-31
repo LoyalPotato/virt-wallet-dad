@@ -15,7 +15,7 @@ class WalletResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id ,
+            'id' => $this->id, //QUESTION: Isto 'e para ser enviado?
             'email' => $this->email,
             'balance' => $this->balance ,
             // 'created_at'=> $this->created_at DEV_ONLY

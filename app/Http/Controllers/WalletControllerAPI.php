@@ -19,6 +19,11 @@ class WalletControllerAPI extends Controller
         return WalletResource::collection(Wallet::all());
     }
 
+    public function count()
+    {
+        return Wallet::all()->count();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -36,9 +41,13 @@ class WalletControllerAPI extends Controller
      * @param  \App\Wallet  $wallet
      * @return \Illuminate\Http\Response
      */
-    public function show(Wallet $wallet)
+    public function show($email)
     {
-        //
+        $wallet = Wallet::where('email', $email)->first();
+        if($wallet == null){
+            return response()->json($wallet,404);
+        }
+        return response()->json($wallet, 200);
     }
 
     /**

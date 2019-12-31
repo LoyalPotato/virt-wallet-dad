@@ -52,7 +52,6 @@ export const store = new Vuex.Store({
                         sessionStorage.removeItem("access_token");
                         context.commit("assignUser", null);
                         sessionStorage.removeItem("authed_user");
-                        console.log("Logged out"); //DEV_ONLY
                         resolve(response);
                     })
                     .catch(function(error) {

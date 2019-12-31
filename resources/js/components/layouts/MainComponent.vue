@@ -67,7 +67,6 @@
 <script>
 export default {
   name: "MainComponent",
-
   data() {
     return {};
   },
@@ -75,9 +74,6 @@ export default {
     getToken() {
       return this.$store.state.token;
     },
-    userExists() {
-      return this.$store.state.user != null;
-    }
   }
 };
 </script>

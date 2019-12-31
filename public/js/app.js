@@ -1861,6 +1861,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "HomePageComponent",
@@ -1868,15 +1872,180 @@ __webpack_require__.r(__webpack_exports__);
     TopNav: _TopNavComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
-    return {};
+    return {
+      newIncome: false
+    };
+  },
+  methods: {
+    rNewInc: function rNewInc() {
+      this.newIncome = true;
+    }
   },
   computed: {
     getToken: function getToken() {
       return this.$store.state.token;
     },
     user: function user() {
-      console.log(this.$store.state.user.name);
       return this.$store.state.user;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterIncomeComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RegisterIncomeComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "RegisterIncomeComponent",
+  data: function data() {
+    return {
+      email: "",
+      value: 0.0,
+      type_payment: "",
+      iban: "",
+      source_description: ""
+    };
+  },
+  mounted: function mounted() {
+    var script = document.createElement("script");
+    script.setAttribute("src", "http://dad.prj.test/js/iban.js");
+    document.body.appendChild(script);
+  },
+  methods: {
+    registerIncome: function registerIncome() {
+      /* 
+      TODO 
+      Send to the API to save a new Movement
+      Check values there
+      If errors, sendo appropriate errors. Check here after answer if there are erros and display them in error box
+      If not, success message
+      After that hide the register new income (do I need to redirect to home page?)
+      */
+
+      /* 
+      transfer = 0
+      start_balance –balance of the associated wallet before the movement is registered;
+      end_balance - balance of the associated wallet after the movement is registered;
+      */
+      axios.get("/api/wallet/" + this.email).then(function (response) {
+        console.log("A wallet exists" + response);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+      axios.post("/api/movements", {
+        email: this.email,
+        value: this.value,
+        type: "i",
+        type_payment: this.type_payment,
+        iban: this.iban,
+        source_description: this.source_description
+      }).then(function (response) {
+        console.log("RESPONSE" + response);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    checkIban: function checkIban() {
+      if (!IBAN.isValid(this.iban) && this.iban.trim() !== "") {
+        this.iban = "";
+        this.$toasted.show("IBAN is incorrect", {
+          action: {
+            text: "X",
+            onClick: function onClick(e, toastObject) {
+              document.getElementById("iban").focus();
+              toastObject.goAway(0);
+            }
+          },
+          position: "bottom-right",
+          duration: 2000,
+          type: "error",
+          onComplete: function onComplete() {
+            document.getElementById("iban").focus();
+          }
+        });
+      }
     }
   }
 });
@@ -1904,7 +2073,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
- // NOTE: Aqui é só para apresentar all wallets ou info as a global?
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "StartPageComponent",
@@ -1925,8 +2095,8 @@ __webpack_require__.r(__webpack_exports__);
     this.loaded = false;
 
     try {
-      axios.get("/api/wallets").then(function (response) {
-        _this.fillData(response.data.data);
+      axios.get("/api/wallets/count").then(function (response) {
+        _this.fillData(response.data);
 
         _this.loaded = true;
       })["catch"](function (error) {
@@ -1942,9 +2112,7 @@ __webpack_require__.r(__webpack_exports__);
         labels: ["Wallet"],
         datasets: [{
           label: "Total number of wallets",
-          //BUG Aparece undefined, preciso de por uma second label right?
-          data: [responseData.length],
-          //NOTE: Eu estou a dar tudo da carteira, n um numero/array de nums
+          data: [responseData],
           borderWidth: 1,
           //NOTE: Border around the bar
           backgroundColor: '#4f9be8',
@@ -2344,7 +2512,6 @@ __webpack_require__.r(__webpack_exports__);
   name: "LoginComponent",
   data: function data() {
     return {
-      title: "Login",
       password: "",
       email: ""
     };
@@ -2365,6 +2532,7 @@ __webpack_require__.r(__webpack_exports__);
                 toastObject.goAway(0);
               }
             },
+            position: "bottom-center",
             duration: 2000,
             type: "success"
           });
@@ -2372,7 +2540,17 @@ __webpack_require__.r(__webpack_exports__);
           _this.$router.push("/home");
         });
       })["catch"](function (error) {
-        console.log(error);
+        _this.$toasted.show("Login failed", {
+          action: {
+            text: "X",
+            onClick: function onClick(e, toastObject) {
+              toastObject.goAway(0);
+            }
+          },
+          position: "bottom-center",
+          duration: 2000,
+          type: "error"
+        });
       });
     },
     cancelLogin: function cancelLogin() {
@@ -2392,6 +2570,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -2564,9 +2743,6 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     getToken: function getToken() {
       return this.$store.state.token;
-    },
-    userExists: function userExists() {
-      return this.$store.state.user != null;
     }
   }
 });
@@ -18746,7 +18922,26 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* p {\r\n  text-align: center;\r\n} */\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* p {\r\n  text-align: center;\r\n} */\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\nlabel {\r\n  display: inline-block;\r\n  margin-bottom: 0.3rem;\n}\n.form-group {\r\n  text-align: left;\n}\r\n", ""]);
 
 // exports
 
@@ -54044,6 +54239,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StartPageComponent.vue?vue&type=style&index=0&lang=css&":
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/StartPageComponent.vue?vue&type=style&index=0&lang=css& ***!
@@ -54993,45 +55218,55 @@ var render = function() {
     [
       _c("top-nav"),
       _vm._v(" "),
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h3", { staticClass: "text-dark mb-1" }, [
-          _vm._v("Welcome to your Home Page")
-        ]),
-        _vm._v(" "),
-        _vm.user != null
-          ? _c(
-              "div",
-              {
-                staticClass:
-                  "d-sm-flex justify-content-between align-items-center mb-4"
-              },
-              [_vm._m(0)]
-            )
-          : _vm._e()
-      ]),
+      _c(
+        "div",
+        { staticClass: "container-fluid" },
+        [
+          _vm.user != null && _vm.user.type == "o"
+            ? _c(
+                "div",
+                {
+                  staticClass:
+                    "d-sm-flex justify-content-between align-items-center mb-4"
+                },
+                [
+                  _c("h3", { staticClass: "text-dark mb-1" }, [
+                    _vm._v("Welcome " + _vm._s(_vm.user.name))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass:
+                        "btn btn-primary btn-sm d-none d-sm-inline-block",
+                      attrs: { role: "button", href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.rNewInc()
+                        }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "fas fa-sm text-white-50" }),
+                      _vm._v("  Register New Income\n      ")
+                    ]
+                  )
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.newIncome ? _c("r-inc") : _vm._e()
+        ],
+        1
+      ),
       _vm._v(" "),
-      _vm._m(1)
+      _vm._m(0)
     ],
     1
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "btn btn-primary btn-sm d-none d-sm-inline-block",
-        attrs: { role: "button", href: "#" }
-      },
-      [
-        _c("i", { staticClass: "fas fa-download fa-sm text-white-50" }),
-        _vm._v(" Generate Report\n      ")
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -55042,6 +55277,242 @@ var staticRenderFns = [
           _c("span", [_vm._v("Copyright © Virtual Wallets 2019")])
         ])
       ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterIncomeComponent.vue?vue&type=template&id=2483e716&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RegisterIncomeComponent.vue?vue&type=template&id=2483e716& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    {
+      staticClass: "user",
+      attrs: { action: "#" },
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          return _vm.registerIncome($event)
+        }
+      }
+    },
+    [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.email,
+              expression: "email"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "email",
+            id: "email",
+            "aria-describedby": "emailHelp",
+            placeholder: "Enter Email Address...",
+            name: "email",
+            required: ""
+          },
+          domProps: { value: _vm.email },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.email = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "value" } }, [_vm._v("Value to transfer")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.value,
+              expression: "value"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            id: "value",
+            placeholder: "Transfer value",
+            name: "value",
+            step: "0.01",
+            min: "0.01",
+            max: "5000",
+            required: ""
+          },
+          domProps: { value: _vm.value },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.value = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", [_vm._v("Type of Payment")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "dropdown" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.type_payment,
+                  expression: "type_payment"
+                }
+              ],
+              staticClass:
+                "form-control btn btn-outline-primary dropdown-toggle",
+              attrs: {
+                "data-toggle": "dropdown",
+                "aria-expanded": "false",
+                name: "paytype",
+                id: "ptype",
+                required: ""
+              },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.type_payment = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c(
+                "option",
+                {
+                  staticClass: "dropdown-item",
+                  attrs: { role: "presentation", value: "c" }
+                },
+                [_vm._v("Cash")]
+              ),
+              _vm._v(" "),
+              _c(
+                "option",
+                {
+                  staticClass: "dropdown-item",
+                  attrs: { role: "presentation", value: "bt" }
+                },
+                [_vm._v("Bank Transfer")]
+              )
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _vm.type_payment == "bt"
+        ? _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "iban" } }, [_vm._v("IBAN")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.iban,
+                  expression: "iban"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "iban",
+                id: "iban",
+                placeholder: "IBAN",
+                required: ""
+              },
+              domProps: { value: _vm.iban },
+              on: {
+                blur: function($event) {
+                  return _vm.checkIban()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.iban = $event.target.value
+                }
+              }
+            })
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary text-white btn-user",
+          attrs: { type: "submit" }
+        },
+        [_vm._v("Confirm")]
+      )
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Source Description")]),
+      _vm._v(" "),
+      _c("textarea", {
+        staticClass: "form-control",
+        attrs: {
+          name: "source_description",
+          id: "srcdscpt",
+          cols: "20",
+          rows: "5",
+          placeholder: "Small description of the income"
+        }
+      })
     ])
   }
 ]
@@ -72448,6 +72919,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/RegisterIncomeComponent.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/RegisterIncomeComponent.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _RegisterIncomeComponent_vue_vue_type_template_id_2483e716___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RegisterIncomeComponent.vue?vue&type=template&id=2483e716& */ "./resources/js/components/RegisterIncomeComponent.vue?vue&type=template&id=2483e716&");
+/* harmony import */ var _RegisterIncomeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RegisterIncomeComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/RegisterIncomeComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _RegisterIncomeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _RegisterIncomeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RegisterIncomeComponent_vue_vue_type_template_id_2483e716___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RegisterIncomeComponent_vue_vue_type_template_id_2483e716___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/RegisterIncomeComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/RegisterIncomeComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/RegisterIncomeComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterIncomeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./RegisterIncomeComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterIncomeComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterIncomeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \**********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterIncomeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterIncomeComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterIncomeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterIncomeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterIncomeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterIncomeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterIncomeComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/RegisterIncomeComponent.vue?vue&type=template&id=2483e716&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/RegisterIncomeComponent.vue?vue&type=template&id=2483e716& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterIncomeComponent_vue_vue_type_template_id_2483e716___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./RegisterIncomeComponent.vue?vue&type=template&id=2483e716& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterIncomeComponent.vue?vue&type=template&id=2483e716&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterIncomeComponent_vue_vue_type_template_id_2483e716___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterIncomeComponent_vue_vue_type_template_id_2483e716___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/StartPageComponent.vue":
 /*!********************************************************!*\
   !*** ./resources/js/components/StartPageComponent.vue ***!
@@ -72895,6 +73453,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_auth_RegisterComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/auth/RegisterComponent.vue */ "./resources/js/components/auth/RegisterComponent.vue");
 /* harmony import */ var _components_HomePageComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/HomePageComponent.vue */ "./resources/js/components/HomePageComponent.vue");
 /* harmony import */ var _components_StartPageComponent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/StartPageComponent.vue */ "./resources/js/components/StartPageComponent.vue");
+/* harmony import */ var _components_RegisterIncomeComponent_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/RegisterIncomeComponent.vue */ "./resources/js/components/RegisterIncomeComponent.vue");
 /*jshint esversion: 6 */
 
 
@@ -72906,6 +73465,8 @@ var registerComp = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("registe
 var homePage = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("home", _components_HomePageComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
 
 var startPage = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("start-page", _components_StartPageComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
+
+var rInc = vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("r-inc", _components_RegisterIncomeComponent_vue__WEBPACK_IMPORTED_MODULE_5__["default"]);
 var routes = [{
   path: "/",
   name: "start",
@@ -72986,8 +73547,6 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
           sessionStorage.removeItem("access_token");
           context.commit("assignUser", null);
           sessionStorage.removeItem("authed_user");
-          console.log("Logged out"); //DEV_ONLY
-
           resolve(response);
         })["catch"](function (error) {
           reject(error);

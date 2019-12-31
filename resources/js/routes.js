@@ -8,6 +8,8 @@ import HomePage from "./components/HomePageComponent.vue";
 const homePage = Vue.component("home", HomePage);
 import StartPage from "./components/StartPageComponent.vue";
 const startPage = Vue.component("start-page", StartPage);
+import RegisterIncome from "./components/RegisterIncomeComponent.vue";
+const rInc = Vue.component("r-inc", RegisterIncome);
    
 export const routes = [
     { path: "/", name: "start", component: startPage},

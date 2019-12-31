@@ -1,4 +1,5 @@
-<template>
+<template> 
+<!-- TODO CONVERT TO BOOTSTRAP -->
   <div>
     <div class="card">
       <div class="card-body">
