@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Hash;
 use  App\Http\Requests\StoreUserRequest;
 use App\User;
 use App\Wallet;
-use App\Http\Requests\StoreUserRequest;
 
 class AuthControllerAPI extends Controller
 {
