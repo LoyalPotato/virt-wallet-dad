@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+/*
+Estas variaveis devem vir do .env
 define('YOUR_SERVER_URL', 'http://dad.prj.test');
-define('CLIENT_ID', '2');
+define('CLIENT_ID', '2'); */
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use  App\Http\Requests\StoreUserRequest;
 use App\User;
 use App\Wallet;
+use App\Http\Requests\StoreUserRequest;
 
 class AuthControllerAPI extends Controller
 {
@@ -17,17 +20,20 @@ class AuthControllerAPI extends Controller
     {
 
         $http = new \GuzzleHttp\Client;
-        $response = $http->post(YOUR_SERVER_URL . '/oauth/token', [
-            'form_params' => [
+        $form_params=[
                 'grant_type' => 'password',
-                'client_id' => CLIENT_ID,
+                'client_id' => env("CLIENT_ID"),
                 'client_secret' => env("PASSWORD_SECRET"),
                 'username' => $request->email,
                 'password' => $request->password,
                 'scope' => ''
-            ],
+            ];
+            /* dd($form_params); */
+        $response = $http->post(env("YOUR_SERVER_URL") . '/oauth/token', [
+            'form_params' => $form_params,
             'exceptions' => false,
         ]);
+        /* dd($response); */
         $responseCode = $response->getStatusCode();
         if ($responseCode == '200') {
             return json_decode((string) $response->getBody(), true);
@@ -48,16 +54,22 @@ class AuthControllerAPI extends Controller
 
     public function register(StoreUserRequest $request)
     {
-        //TODO: Alter to required fields @StoreUserRequest file
         $validated = $request->validated();
-        
-        $newUser = User::create($validated);
+
+        $validated['password'] = bcrypt($validated['password']);
+        $validated['photo'] = $request->file('photo')->store('fotos');
+        $user = User::create($validated);
+        $success['token'] =  $user->createToken('AppName')->accessToken;
+
+        return response()->json(['success'=>$success], $this->successStatus);
+
+        //TODO: Criar uma wallet
         //NOTE: Aqui é preciso por mais algum campo ou eles sao auto-filled? O que é o remember token?
-        return [$newUser
+        /* return [$newUser
             // QUESTION: Como é que posso ir buscar o id deste user registado? Ou funciona com o email?
         , User::find($request->email)->wallet()->save(new Wallet([[
             'email'=> $request->email,
             'balance'=> 0.0,
-        ]]))];
+        ]]))]; */
     }
 }

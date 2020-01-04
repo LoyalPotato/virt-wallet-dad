@@ -15,3 +15,8 @@ public/js/*
 TO-DO
 /public/js/app.js
 /public/mix-manifest.json
+/docker/nginx.conf
+/docker/php.dockerfile
+/docker-compose.yml
+/composer.lock
+/project/LaravelServer/public/js/app.js
