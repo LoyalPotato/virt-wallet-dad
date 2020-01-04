@@ -18,3 +18,5 @@ TO-DO
 /docker/nginx.conf
 /docker/php.dockerfile
 /docker-compose.yml
+/composer.lock
+/project/LaravelServer/public/js/app.js
