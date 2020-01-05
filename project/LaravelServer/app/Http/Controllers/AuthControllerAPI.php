@@ -55,14 +55,13 @@ class AuthControllerAPI extends Controller
     {
         $validated = $request->validated();
 
-        $validated['password'] = bcrypt($validated['password']);
-        $validated['photo'] = $request->file('photo')->store('fotos');
+        /* $validated['password'] = bcrypt($validated['password']);
+        $validated['photo'] = $request->file('photo')->store('fotos'); */
 
 
-        $user = new User($validated);
+        $user = User::create($validated);
         $user->wallet()->create();
 
-        $user->save();
         $success['token'] =  $user->createToken('AppName')->accessToken;
 
         return response()->json(['success'=>$success], $this->successStatus);
