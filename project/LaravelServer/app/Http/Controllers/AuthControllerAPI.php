@@ -57,18 +57,14 @@ class AuthControllerAPI extends Controller
 
         $validated['password'] = bcrypt($validated['password']);
         $validated['photo'] = $request->file('photo')->store('fotos');
-        $user = User::create($validated);
+
+
+        $user = new User($validated);
+        $user->wallet()->create();
+
+        $user->save();
         $success['token'] =  $user->createToken('AppName')->accessToken;
 
         return response()->json(['success'=>$success], $this->successStatus);
-
-        //TODO: Criar uma wallet
-        //NOTE: Aqui é preciso por mais algum campo ou eles sao auto-filled? O que é o remember token?
-        /* return [$newUser
-            // QUESTION: Como é que posso ir buscar o id deste user registado? Ou funciona com o email?
-        , User::find($request->email)->wallet()->save(new Wallet([[
-            'email'=> $request->email,
-            'balance'=> 0.0,
-        ]]))]; */
     }
 }

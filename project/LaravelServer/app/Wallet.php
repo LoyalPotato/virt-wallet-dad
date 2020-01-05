@@ -9,7 +9,7 @@ class Wallet extends Model
     protected $table = 'wallets';
 
     protected $guarded = [];
-    
+
     public function movements()
     {
         return $this->hasMany('App\Movement');
@@ -17,6 +17,6 @@ class Wallet extends Model
 
     public function user()
     {
-        return $this->hasOne('App\User');
+        return $this->belongsTo('App\User');
     }
 }
