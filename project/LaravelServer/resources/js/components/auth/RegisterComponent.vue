@@ -27,15 +27,15 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <input class="form-control form-control-user" type="text" id="name" placeholder="Name" v-bind:name="name" required>
+                                    <input class="form-control form-control-user" type="text" id="name" placeholder="Name" v-model="name" required>
                                 </div>
 
                                 <div class="form-group">
-                                  <input class="form-control form-control-user" type="email" id="email" aria-describedby="emailHelp" placeholder="Email Address" v-bind:email="email" required>
+                                  <input class="form-control form-control-user" type="email" id="email" aria-describedby="emailHelp" placeholder="Email Address" v-model="email" required>
                                 </div>
 
                                 <div class="form-group">
-                                  <input class="form-control form-control-user" placeholder="NIF" v-bind:nif="nif" id="nif" type="text" v-model.number="nif" required maxlength="9" pattern="[0-9]{9}" title="9 digit number">
+                                  <input class="form-control form-control-user" placeholder="NIF" id="nif" type="text" v-model.number="nif" required maxlength="9" pattern="[0-9]{9}" title="9 digit number">
                                 </div>
 
                                 <div class="form-group row">
@@ -66,6 +66,15 @@
                 </div>
             </div>
         </div>
+
+        <ul>
+          <li>{{name}}</li>
+          <li>{{password}}</li>
+          <li>{{email}}</li>
+          <li>{{password_confirmation}}</li>
+          <li>{{photo}}</li>
+          <li>{{nif}}</li>
+        </ul>
     </div>
 </template>
 <script>

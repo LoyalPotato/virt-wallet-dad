@@ -78,7 +78,7 @@ export const store = new Vuex.Store({
 					});
 			});
 		},
-		registerUser(data) {
+		registerUser(context, data) {
 			return new Promise((resolve, reject) => {
 				axios
 					.post('/api/register/', {

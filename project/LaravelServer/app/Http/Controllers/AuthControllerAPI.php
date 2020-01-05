@@ -53,14 +53,12 @@ class AuthControllerAPI extends Controller
 
     public function register(StoreUserRequest $request)
     {
-
-        /* if ($request['photo'].length == 0) {
-            unset($request['photo']);
-        } */
-
         $validated = $request->validated();
         $validated['password'] = bcrypt($validated['password']);
-        //$validated['photo'] = $request->file('photo')->store('fotos'); */
+        if ($request['photo']) {
+            $validated['photo'] = $request->file('photo')->store('fotos');
+        }
+
 
         $user = User::create($validated);
         //$user->wallet()->create();

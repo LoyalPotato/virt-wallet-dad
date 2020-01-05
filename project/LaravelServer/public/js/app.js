@@ -2463,6 +2463,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RegisterComponent",
@@ -56761,27 +56770,59 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
                     _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.name,
+                          expression: "name"
+                        }
+                      ],
                       staticClass: "form-control form-control-user",
                       attrs: {
                         type: "text",
                         id: "name",
                         placeholder: "Name",
-                        name: _vm.name,
                         required: ""
+                      },
+                      domProps: { value: _vm.name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.name = $event.target.value
+                        }
                       }
                     })
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
                     _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.email,
+                          expression: "email"
+                        }
+                      ],
                       staticClass: "form-control form-control-user",
                       attrs: {
                         type: "email",
                         id: "email",
                         "aria-describedby": "emailHelp",
                         placeholder: "Email Address",
-                        email: _vm.email,
                         required: ""
+                      },
+                      domProps: { value: _vm.email },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.email = $event.target.value
+                        }
                       }
                     })
                   ]),
@@ -56800,7 +56841,6 @@ var render = function() {
                       staticClass: "form-control form-control-user",
                       attrs: {
                         placeholder: "NIF",
-                        nif: _vm.nif,
                         id: "nif",
                         type: "text",
                         required: "",
@@ -56908,6 +56948,20 @@ var render = function() {
           ])
         ])
       ])
+    ]),
+    _vm._v(" "),
+    _c("ul", [
+      _c("li", [_vm._v(_vm._s(_vm.name))]),
+      _vm._v(" "),
+      _c("li", [_vm._v(_vm._s(_vm.password))]),
+      _vm._v(" "),
+      _c("li", [_vm._v(_vm._s(_vm.email))]),
+      _vm._v(" "),
+      _c("li", [_vm._v(_vm._s(_vm.password_confirmation))]),
+      _vm._v(" "),
+      _c("li", [_vm._v(_vm._s(_vm.photo))]),
+      _vm._v(" "),
+      _c("li", [_vm._v(_vm._s(_vm.nif))])
     ])
   ])
 }
@@ -74065,7 +74119,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
         });
       });
     },
-    registerUser: function registerUser(data) {
+    registerUser: function registerUser(context, data) {
       return new Promise(function (resolve, reject) {
         axios.post('/api/register/', {
           email: data.email,
