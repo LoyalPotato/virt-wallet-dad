@@ -27,6 +27,7 @@ class AuthControllerAPI extends Controller
             'exceptions' => false,
         ]);
         $responseCode = $response->getStatusCode();
+        dd($response);
         if ($responseCode == '200') {
             return json_decode((string) $response->getBody(), true);
         } else {

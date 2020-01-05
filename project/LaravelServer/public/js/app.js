@@ -1995,6 +1995,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     registerIncome: function registerIncome() {
+      var _this = this;
+
       /* 
       TODO 
       Send to the API to save a new Movement
@@ -2010,21 +2012,24 @@ __webpack_require__.r(__webpack_exports__);
       end_balance - balance of the associated wallet after the movement is registered;
       */
       axios.get("/api/wallet/" + this.email).then(function (response) {
-        console.log("A wallet exists" + response);
+        axios.post("/api/movements", {
+          email: _this.email,
+          value: _this.value,
+          type: "i",
+          type_payment: _this.type_payment,
+          iban: _this.iban,
+          source_description: _this.source_description
+        }).then(function (response) {
+          console.log("RESPONSE" + response);
+        })["catch"](function (error) {
+          console.log(error);
+        });
       })["catch"](function (error) {
-        console.log(error);
-      });
-      axios.post("/api/movements", {
-        email: this.email,
-        value: this.value,
-        type: "i",
-        type_payment: this.type_payment,
-        iban: this.iban,
-        source_description: this.source_description
-      }).then(function (response) {
-        console.log("RESPONSE" + response);
-      })["catch"](function (error) {
-        console.log(error);
+        _this.$toasted.show("There isn't a wallet registered with that email", {
+          position: "bottom-right",
+          duration: 2000,
+          type: "error"
+        });
       });
     },
     checkIban: function checkIban() {
@@ -73595,8 +73600,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\DAD\prj\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\DAD\prj\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\DAD\prj\project\LaravelServer\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\DAD\prj\project\LaravelServer\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
