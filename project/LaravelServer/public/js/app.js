@@ -74075,8 +74075,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
           photo: data.photo,
           nif: data.nif
         }).then(function (response) {
-          localStorage.setItem('access_token', response.data.access_token);
-          context.commit('assignToken', response.data.access_token);
+          /* localStorage.setItem('access_token', response.data.access_token);
+          context.commit('assignToken', response.data.access_token); */
           resolve(response);
         })["catch"](function (error) {
           reject(error);
