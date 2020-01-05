@@ -59,8 +59,8 @@ class AuthControllerAPI extends Controller
         } */
 
         $validated = $request->validated();
-        /* $validated['password'] = bcrypt($validated['password']);
-        $validated['photo'] = $request->file('photo')->store('fotos'); */
+        $validated['password'] = bcrypt($validated['password']);
+        //$validated['photo'] = $request->file('photo')->store('fotos'); */
 
         $user = User::create($validated);
         //$user->wallet()->create();
