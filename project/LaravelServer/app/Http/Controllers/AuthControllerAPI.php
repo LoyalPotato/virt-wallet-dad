@@ -24,15 +24,11 @@ class AuthControllerAPI extends Controller
                 'username' => $request->email,
                 'password' => $request->password,
                 'scope' => ''
-            ];
-
-        $response = $http->post(env("YOUR_SERVER_URL") . '/oauth/token', [
-            'form_params' => $form_params,
+            ],
             'exceptions' => false,
         ]);
 
         $responseCode = $response->getStatusCode();
-        dd($response);
         if ($responseCode == '200') {
             return json_decode((string) $response->getBody(), true);
         } else {
