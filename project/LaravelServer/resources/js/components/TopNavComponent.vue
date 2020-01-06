@@ -226,7 +226,7 @@ export default {
 
     goToSettings() {
       this.$store.dispatch("getAuthUser").then(response => {
-        this.$router.push("/");
+        this.$router.push("/settings");
       });
     }
   },
