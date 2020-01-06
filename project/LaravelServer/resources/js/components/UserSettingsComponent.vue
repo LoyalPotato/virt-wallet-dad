@@ -1,14 +1,22 @@
 <template>
+    <div id="content">
+        <top-nav></top-nav>
+    </div>
 
 </template>
 <script>
-  export default {
-      name: "UserSettings",
+import TopNav from "./TopNavComponent.vue";
+
+export default {
+    name: "UserSettings",
+    components: {
+        TopNav
+    },
     data() {
-      return { }
+        return { }
     },
     methods: {
 
     }
-  }
+}
 </script>
