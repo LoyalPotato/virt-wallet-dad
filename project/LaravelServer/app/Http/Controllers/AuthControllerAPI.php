@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers;
 
-/*
-Estas variaveis devem vir do .env
-define('YOUR_SERVER_URL', 'http://dad.prj.test');
-define('CLIENT_ID', '2'); */
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +16,8 @@ class AuthControllerAPI extends Controller
     {
 
         $http = new \GuzzleHttp\Client;
-        $form_params=[
+        $response = $http->post(env("YOUR_SERVER_URL") . '/oauth/token', [
+            'form_params' => [
                 'grant_type' => 'password',
                 'client_id' => env("CLIENT_ID"),
                 'client_secret' => env("PASSWORD_SECRET"),
@@ -35,6 +32,7 @@ class AuthControllerAPI extends Controller
         ]);
 
         $responseCode = $response->getStatusCode();
+        dd($response);
         if ($responseCode == '200') {
             return json_decode((string) $response->getBody(), true);
         } else {

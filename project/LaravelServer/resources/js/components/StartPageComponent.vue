@@ -1,6 +1,8 @@
 <template>
   <div>
+    <!-- TODO Add some padding -->
     <p>Welcome to Virtual Wallets</p>
+    <!-- TODO Make this a condition, disappears when logged in -->
     <p>Please sign in or register to enter the platform</p>
     <p>Msg about the infographics down there</p>
     <div class="container-small">
@@ -11,7 +13,6 @@
 
 <script>
 import WalletsCharts from "./WalletsChartComponent";
-// NOTE: Aqui é só para apresentar all wallets ou info as a global?
 export default {
   name: "StartPageComponent",
   components: {
@@ -29,9 +30,9 @@ export default {
     this.loaded = false;
     try {
       axios
-        .get("/api/wallets")
+        .get("/api/wallets/count")
         .then(response => {
-          this.fillData(response.data.data);
+          this.fillData(response.data);
           this.loaded = true;
         })
         .catch(error => {
@@ -48,8 +49,7 @@ export default {
         datasets: [
           {
             label: "Total number of wallets",
-            //BUG Aparece undefined, preciso de por uma second label right?
-            data: [responseData.length], //NOTE: Eu estou a dar tudo da carteira, n um numero/array de nums
+            data: [responseData], 
             borderWidth: 1, //NOTE: Border around the bar
             backgroundColor: '#4f9be8',
             hoverBackgroundColor: '#3f7fbf'

@@ -79,7 +79,6 @@
 </template>
 <script>
 import PictureInput from 'vue-picture-input'
-
 export default {
 name: "RegisterComponent",
   data() {
@@ -99,7 +98,6 @@ name: "RegisterComponent",
   methods: {
     register() {
       console.log("Entered register");
-
       this.$store
         .dispatch("registerUser", {
           email: this.email,
@@ -116,30 +114,22 @@ name: "RegisterComponent",
           });
         })
         .catch(function(error) {
-
           console.log("Error registering user.");
           console.log(error); //TODO: Error page?
         });
-
     },
-
     cancelRegistration() {
       this.$router.push("/");
     },
-
     onChange (image) {
       console.log('New picture selected!')
       if (image) {
         console.log('Picture loaded.')
         this.photo = image;
-
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!')
       }
     }
 }
-
-
-
 }
 </script>

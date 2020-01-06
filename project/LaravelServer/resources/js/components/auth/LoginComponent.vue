@@ -66,7 +66,6 @@ export default {
   name: "LoginComponent",
   data() {
     return {
-      title: "Login",
       password: "",
       email: ""
     };
@@ -79,8 +78,7 @@ export default {
           password: this.password
         })
         .then(response => {
-          this.$store.dispatch("getAuthUser")
-          .then(response => {            
+          this.$store.dispatch("getAuthUser").then(response => {
             this.$toasted.show("Login successful", {
               action: {
                 text: "X",
@@ -88,14 +86,25 @@ export default {
                   toastObject.goAway(0);
                 }
               },
+              position: "bottom-center",
               duration: 2000,
               type: "success"
             });
             this.$router.push("/home");
           });
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(error => {
+          this.$toasted.show("Login failed", {
+            action: {
+              text: "X",
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              }
+            },
+            position: "bottom-center",
+            duration: 2000,
+            type: "error"
+          });
         });
     },
     cancelLogin() {
