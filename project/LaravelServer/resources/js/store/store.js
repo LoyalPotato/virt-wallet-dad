@@ -98,6 +98,45 @@ export const store = new Vuex.Store({
 						reject(error);
 					});
 			});
+		},
+
+		saveUserChanges(data) {
+			return new Promise((resolve, reject) => {
+				axios
+					.post('/api/updateUser/', {
+						name: data.name,
+						email: data.email,
+						nif: data.nif,
+						photo: data.photo,
+						password: data.password,
+						newPassword: data.newPassword,
+						newPassword_confirmation: data.newPasswordConfirmed
+					})
+					.then(function(response) {
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
+
+			/* axios
+				.post('/api/register/', {
+					email: data.email,
+					password: data.password,
+					password_confirmation: data.password_confirmation,
+					name: data.name,
+					photo: data.photo,
+					nif: data.nif
+				})
+				.then(function(response) {
+					 localStorage.setItem('access_token', response.data.access_token);
+					context.commit('assignToken', response.data.access_token);
+					resolve(response);
+				})
+				.catch(function(error) {
+					reject(error);
+				}); */
 		}
 	}
 });
