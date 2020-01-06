@@ -9,9 +9,10 @@ define('CLIENT_ID', '2'); */
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use  App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\User;
 use App\Wallet;
+use Illuminate\Http\File;
 
 class AuthControllerAPI extends Controller
 {
@@ -27,12 +28,12 @@ class AuthControllerAPI extends Controller
                 'password' => $request->password,
                 'scope' => ''
             ];
-            /* dd($form_params); */
+
         $response = $http->post(env("YOUR_SERVER_URL") . '/oauth/token', [
             'form_params' => $form_params,
             'exceptions' => false,
         ]);
-        /* dd($response); */
+
         $responseCode = $response->getStatusCode();
         if ($responseCode == '200') {
             return json_decode((string) $response->getBody(), true);
@@ -54,21 +55,29 @@ class AuthControllerAPI extends Controller
     public function register(StoreUserRequest $request)
     {
         $validated = $request->validated();
-
         $validated['password'] = bcrypt($validated['password']);
-        $validated['photo'] = $request->file('photo')->store('fotos');
+        if ($request['photo']) {
+            $image = $request->photo;
+
+            preg_match('~/(.*?);~', $image, $output);
+            $imageExtension = $output[1];
+
+            $imageName = \Str::random(10).'.'.$imageExtension;
+
+            $image = trim( str_replace('data:image/'.$imageExtension.';base64,', "", $image ) ); /* Replace with an empty string */
+
+            \Storage::put(storage_path(). '/app/fotos' . $imageName, base64_decode($image));
+
+
+            $validated['photo'] = $imageName;
+        }
+
+
         $user = User::create($validated);
-        $success['token'] =  $user->createToken('AppName')->accessToken;
+        Wallet::create(['id' => $user['id'],'email' => $user['email'], 'balance' => 0]);
 
-        return response()->json(['success'=>$success], $this->successStatus);
+        //$success['token'] =  $user->createToken('AppName')->accessToken;
 
-        //TODO: Criar uma wallet
-        //NOTE: Aqui é preciso por mais algum campo ou eles sao auto-filled? O que é o remember token?
-        /* return [$newUser
-            // QUESTION: Como é que posso ir buscar o id deste user registado? Ou funciona com o email?
-        , User::find($request->email)->wallet()->save(new Wallet([[
-            'email'=> $request->email,
-            'balance'=> 0.0,
-        ]]))]; */
+        //return response()->json(['success'=>$success], $this->successStatus);
     }
 }
