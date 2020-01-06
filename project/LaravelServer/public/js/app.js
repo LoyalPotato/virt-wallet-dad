@@ -2533,6 +2533,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     cancelChanges: function cancelChanges() {
       this.$router.push("/home");
+    },
+    onChange: function onChange(image) {
+      console.log('New picture selected!');
+
+      if (image) {
+        console.log('Picture loaded.');
+        this.photo = image;
+      } else {
+        console.log('FileReader API not supported: use the <form>, Luke!');
+      }
     }
   }
 });
@@ -57207,7 +57217,8 @@ var render = function() {
                     expression: "name"
                   }
                 ],
-                attrs: { type: "text" },
+                staticClass: "form-control form-control-user",
+                attrs: { type: "text", id: "name", required: "" },
                 domProps: { value: _vm.name },
                 on: {
                   input: function($event) {
@@ -57224,7 +57235,13 @@ var render = function() {
               _c("label", { attrs: { for: "name" } }, [_vm._v("Email: ")]),
               _vm._v(" "),
               _c("input", {
-                attrs: { type: "text", placeholder: _vm.email, disabled: "" }
+                staticClass: "form-control form-control-user",
+                attrs: {
+                  type: "email",
+                  placeholder: _vm.email,
+                  id: "email",
+                  disabled: ""
+                }
               })
             ]),
             _vm._v(" "),
@@ -57240,7 +57257,15 @@ var render = function() {
                     expression: "nif"
                   }
                 ],
-                attrs: { type: "text" },
+                staticClass: "form-control form-control-user",
+                attrs: {
+                  type: "text",
+                  id: "nif",
+                  required: "",
+                  maxlength: "9",
+                  pattern: "[0-9]{9}",
+                  title: "9 digit number"
+                },
                 domProps: { value: _vm.nif },
                 on: {
                   input: function($event) {
@@ -57257,24 +57282,12 @@ var render = function() {
               _c("label", { attrs: { for: "name" } }, [_vm._v("Photo: ")]),
               _vm._v(" "),
               _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.photo,
-                    expression: "photo"
-                  }
-                ],
-                attrs: { type: "text" },
-                domProps: { value: _vm.photo },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.photo = $event.target.value
-                  }
-                }
+                attrs: {
+                  type: "file",
+                  id: "photo",
+                  accept: "image/png, image/jpeg"
+                },
+                on: { change: _vm.onChange }
               })
             ]),
             _vm._v(" "),
@@ -57292,7 +57305,8 @@ var render = function() {
                     expression: "password"
                   }
                 ],
-                attrs: { type: "text" },
+                staticClass: "form-control form-control-user",
+                attrs: { type: "text", id: "oldPassword", required: "" },
                 domProps: { value: _vm.password },
                 on: {
                   input: function($event) {
@@ -57304,7 +57318,7 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _c("span", [_vm._v("Required to change password.")])
+              _c("span", [_vm._v("Required to save changes.")])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -57321,7 +57335,8 @@ var render = function() {
                     expression: "newPassword"
                   }
                 ],
-                attrs: { type: "text" },
+                staticClass: "form-control form-control-user",
+                attrs: { type: "text", id: "newPassword" },
                 domProps: { value: _vm.newPassword },
                 on: {
                   input: function($event) {
@@ -57346,7 +57361,8 @@ var render = function() {
                     expression: "newPasswordConfirmed"
                   }
                 ],
-                attrs: { type: "text" },
+                staticClass: "form-control form-control-user",
+                attrs: { type: "text", id: "newPasswordConfirmed" },
                 domProps: { value: _vm.newPasswordConfirmed },
                 on: {
                   input: function($event) {

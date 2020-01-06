@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\User;
 use App\Wallet;
 use Illuminate\Http\File;
@@ -75,12 +76,36 @@ class AuthControllerAPI extends Controller
         //return response()->json(['success'=>$success], $this->successStatus);
     }
 
-    public function updateUser(StoreUserRequest $request) { //StoreUserRequest ou so Request?
-        $user = User::where('email', $request->email)->first();
+    public function updateUser(UpdateUserRequest $request) { //StoreUserRequest ou so Request?
+        //Validate data
+        $validated = $request->validated();
 
-        $user->name = $request->name;
-        $user->save();
+        //Check if password is correct
 
-        return response()->json(['msg' => 'Entered Auth APi'], 200);
+        //If there's a new password, change password to it
+        $validated['password'] = bcrypt($validated['password']); //placeholder
+
+        //If there's a new photo, upload it
+        if ($request['photo']) {
+            $image = $request->photo;
+
+            preg_match('~/(.*?);~', $image, $output);
+            $imageExtension = $output[1];
+
+            $imageName = \Str::random(10).'.'.$imageExtension;
+
+            $image = trim( str_replace('data:image/'.$imageExtension.';base64,', "", $image ) ); /* Replace with an empty string */
+
+            \Storage::put(storage_path(). '/app/fotos' . $imageName, base64_decode($image));
+
+
+            $validated['photo'] = $imageName;
+        }
+
+        //Find the user that is being updated
+        $user = User::where('email', $validated['email'])->firstOrFail();
+
+        //Persist new data to database
+        $user->save($validated);
     }
 }
