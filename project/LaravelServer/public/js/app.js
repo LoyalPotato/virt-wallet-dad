@@ -2458,6 +2458,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserSettings",
@@ -2467,7 +2496,13 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       title: "New User Registration",
-      name: this.$store.state.user.name
+      name: this.$store.state.user.name,
+      email: this.$store.state.user.email,
+      nif: this.$store.state.user.nif,
+      photo: this.$store.state.user.photo,
+      password: "",
+      newPassword: "",
+      newPasswordConfirmed: ""
     };
   },
   computed: {},
@@ -2477,7 +2512,13 @@ __webpack_require__.r(__webpack_exports__);
 
       console.log("Entered saving changes to user.");
       this.$store.dispatch("saveUserChanges", {
-        name: this.name
+        name: this.name,
+        email: this.email,
+        nif: this.nif,
+        photo: this.photo,
+        password: this.password,
+        newPassword: this.newPassword,
+        newPasswordConfirmed: this.newPasswordConfirmed
       }).then(function (response) {
         _this.$store.dispatch("saveUserChanges").then(function (response) {
           console.log("Success"); //TODO Trigger success warning
@@ -57154,7 +57195,7 @@ var render = function() {
             }
           },
           [
-            _c("div", [
+            _c("div", { staticClass: "form-group" }, [
               _c("label", { attrs: { for: "name" } }, [_vm._v("Name: ")]),
               _vm._v(" "),
               _c("input", {
@@ -57174,6 +57215,145 @@ var render = function() {
                       return
                     }
                     _vm.name = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "name" } }, [_vm._v("Email: ")]),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "text", placeholder: _vm.email, disabled: "" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "name" } }, [_vm._v("NIF: ")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.nif,
+                    expression: "nif"
+                  }
+                ],
+                attrs: { type: "text" },
+                domProps: { value: _vm.nif },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.nif = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "name" } }, [_vm._v("Photo: ")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.photo,
+                    expression: "photo"
+                  }
+                ],
+                attrs: { type: "text" },
+                domProps: { value: _vm.photo },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.photo = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "name" } }, [
+                _vm._v("Old Password: ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.password,
+                    expression: "password"
+                  }
+                ],
+                attrs: { type: "text" },
+                domProps: { value: _vm.password },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.password = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", [_vm._v("Required to change password.")])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "newPassword" } }, [
+                _vm._v("New Password: ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newPassword,
+                    expression: "newPassword"
+                  }
+                ],
+                attrs: { type: "text" },
+                domProps: { value: _vm.newPassword },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.newPassword = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "newPasswordConfirmed" } }, [
+                _vm._v("New Password Confirmation: ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newPasswordConfirmed,
+                    expression: "newPasswordConfirmed"
+                  }
+                ],
+                attrs: { type: "text" },
+                domProps: { value: _vm.newPasswordConfirmed },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.newPasswordConfirmed = $event.target.value
                   }
                 }
               })
@@ -74991,9 +75171,15 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     saveUserChanges: function saveUserChanges(data) {
       return new Promise(function (resolve, reject) {
         axios.post('/api/updateUser/', {
-          name: data.name
+          name: data.name,
+          email: data.email,
+          nif: data.nif,
+          photo: data.photo,
+          password: data.password,
+          newPassword: data.newPassword,
+          newPassword_confirmation: data.newPasswordConfirmed
         }).then(function (response) {
-          resolve();
+          resolve(response);
         })["catch"](function (error) {
           reject(error);
         });

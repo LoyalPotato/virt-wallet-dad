@@ -104,10 +104,16 @@ export const store = new Vuex.Store({
 			return new Promise((resolve, reject) => {
 				axios
 					.post('/api/updateUser/', {
-						name: data.name
+						name: data.name,
+						email: data.email,
+						nif: data.nif,
+						photo: data.photo,
+						password: data.password,
+						newPassword: data.newPassword,
+						newPassword_confirmation: data.newPasswordConfirmed
 					})
 					.then(function(response) {
-						resolve();
+						resolve(response);
 					})
 					.catch(function(error) {
 						reject(error);

@@ -4,9 +4,38 @@
 
         <div class="container-fluid">
             <form class="user" v-on:submit.prevent="saveChangesToUser">
-                <div>
+                <div class="form-group">
                     <label for="name">Name: </label>
                     <input type="text" v-model="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Email: </label>
+                    <input type="text" :placeholder="email" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">NIF: </label>
+                    <input type="text" v-model="nif">
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Photo: </label>
+                    <input type="text" v-model="photo">
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Old Password: </label>
+                    <input type="text" v-model="password">
+                    <span>Required to change password.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">New Password: </label>
+                    <input type="text" v-model="newPassword">
+
+                    <label for="newPasswordConfirmed">New Password Confirmation: </label>
+                    <input type="text" v-model="newPasswordConfirmed">
                 </div>
 
                 <div class="btn-group btn-group-justified">
@@ -43,6 +72,12 @@ export default {
         return {
             title: "New User Registration",
             name: this.$store.state.user.name,
+            email: this.$store.state.user.email,
+            nif: this.$store.state.user.nif,
+            photo: this.$store.state.user.photo,
+            password: "",
+            newPassword: "",
+            newPasswordConfirmed: ""
         }
     },
     computed: {
@@ -54,6 +89,12 @@ export default {
             this.$store
                 .dispatch("saveUserChanges", {
                     name: this.name,
+                    email: this.email,
+                    nif: this.nif,
+                    photo: this.photo,
+                    password: this.password,
+                    newPassword: this.newPassword,
+                    newPasswordConfirmed: this.newPasswordConfirmed
                 })
                 .then(response => {
                     this.$store.dispatch("saveUserChanges").then(response => {

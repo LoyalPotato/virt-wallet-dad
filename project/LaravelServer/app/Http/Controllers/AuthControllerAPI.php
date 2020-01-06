@@ -75,7 +75,12 @@ class AuthControllerAPI extends Controller
         //return response()->json(['success'=>$success], $this->successStatus);
     }
 
-    public function updateUser(Request $request) { //StoreUserRequest ou so Request?
+    public function updateUser(StoreUserRequest $request) { //StoreUserRequest ou so Request?
+        $user = User::where('email', $request->email)->first();
+
+        $user->name = $request->name;
+        $user->save();
+
         return response()->json(['msg' => 'Entered Auth APi'], 200);
     }
 }
