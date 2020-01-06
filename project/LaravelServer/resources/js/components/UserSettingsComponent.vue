@@ -6,36 +6,36 @@
             <form class="user" v-on:submit.prevent="saveChangesToUser">
                 <div class="form-group">
                     <label for="name">Name: </label>
-                    <input type="text" v-model="name">
+                    <input type="text" v-model="name" class="form-control form-control-user" id="name" required>
                 </div>
 
                 <div class="form-group">
                     <label for="name">Email: </label>
-                    <input type="text" :placeholder="email" disabled>
+                    <input type="email" :placeholder="email" class="form-control form-control-user" id="email" disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="name">NIF: </label>
-                    <input type="text" v-model="nif">
+                    <input type="text" v-model="nif" class="form-control form-control-user" id="nif" required maxlength="9" pattern="[0-9]{9}" title="9 digit number">
                 </div>
 
                 <div class="form-group">
                     <label for="name">Photo: </label>
-                    <input type="text" v-model="photo">
+                    <input type="file" id="photo" accept="image/png, image/jpeg" @change="onChange">
                 </div>
 
                 <div class="form-group">
                     <label for="name">Old Password: </label>
-                    <input type="text" v-model="password">
-                    <span>Required to change password.</span>
+                    <input type="text" v-model="password" class="form-control form-control-user" id="oldPassword" required>
+                    <span>Required to save changes.</span>
                 </div>
 
                 <div class="form-group">
                     <label for="newPassword">New Password: </label>
-                    <input type="text" v-model="newPassword">
+                    <input type="text" v-model="newPassword" class="form-control form-control-user" id="newPassword">
 
                     <label for="newPasswordConfirmed">New Password Confirmation: </label>
-                    <input type="text" v-model="newPasswordConfirmed">
+                    <input type="text" v-model="newPasswordConfirmed" class="form-control form-control-user" id="newPasswordConfirmed">
                 </div>
 
                 <div class="btn-group btn-group-justified">
@@ -110,6 +110,16 @@ export default {
 
         cancelChanges() {
             this.$router.push("/home")
+        },
+
+        onChange (image) {
+            console.log('New picture selected!')
+            if (image) {
+                console.log('Picture loaded.')
+                this.photo = image;
+            } else {
+                console.log('FileReader API not supported: use the <form>, Luke!')
+            }
         }
     }
 }
