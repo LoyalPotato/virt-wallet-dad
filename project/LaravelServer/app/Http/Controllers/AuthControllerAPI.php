@@ -57,12 +57,14 @@ class AuthControllerAPI extends Controller
         $validated = $request->validated();
         $validated['password'] = bcrypt($validated['password']);
         if ($request['photo']) {
-            $image = $request->photo;  // your base64 encoded
+            $image = $request->photo;
 
-            $image = str_replace('data:image/png;base64,', '', $image);
-            $image = str_replace(' ', '+', $image);
+            preg_match('~/(.*?);~', $image, $output);
+            $imageExtension = $output[1];
 
-            $imageName = \Str::random(10).'.png';
+            $imageName = \Str::random(10).'.'.$imageExtension;
+
+            $image = trim( str_replace('data:image/'.$imageExtension.';base64,', "", $image ) ); /* Replace with an empty string */
 
             \Storage::put(storage_path(). '/app/fotos' . $imageName, base64_decode($image));
 
