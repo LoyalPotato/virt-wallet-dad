@@ -83,7 +83,7 @@ export default {
       type_payment: "",
       iban: "",
       source_description: ""
-    };
+    }; 
   },
   mounted() {
     let script = document.createElement("script");
