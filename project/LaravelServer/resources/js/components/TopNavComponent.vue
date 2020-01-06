@@ -196,7 +196,7 @@
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile
               </a>-->
               <!-- NOTE: Vai dar aos settings da conta -->
-              <a class="dropdown-item" role="presentation" href="#">
+              <a class="dropdown-item" role="presentation" href="#" @click="goToSettings">
                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Settings
               </a>
               <div class="dropdown-divider"></div>
@@ -220,6 +220,12 @@ export default {
    methods: {
     logout() {
       this.$store.dispatch("logout").then(response => {
+        this.$router.push("/");
+      });
+    },
+
+    goToSettings() {
+      this.$store.dispatch("getAuthUser").then(response => {
         this.$router.push("/");
       });
     }
