@@ -7,7 +7,8 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
 	state: {
 		user: JSON.parse(sessionStorage.getItem('authed_user')) || null,
-		token: sessionStorage.getItem('access_token') || null
+		token: sessionStorage.getItem('access_token') || null,
+		movements: []
 	},
 	mutations: {
 		assignUser(state, user) {
@@ -119,24 +120,25 @@ export const store = new Vuex.Store({
 						reject(error);
 					});
 			});
+		},
 
-			/* axios
-				.post('/api/register/', {
-					email: data.email,
-					password: data.password,
-					password_confirmation: data.password_confirmation,
-					name: data.name,
-					photo: data.photo,
-					nif: data.nif
-				})
-				.then(function(response) {
-					 localStorage.setItem('access_token', response.data.access_token);
-					context.commit('assignToken', response.data.access_token);
-					resolve(response);
-				})
-				.catch(function(error) {
-					reject(error);
-				}); */
+		getMovements() {
+			return new Promise((resolve, reject) => {
+				axios
+					.get(
+						'/api/movementsFromWallet/',
+						{
+							//get wallet of user and return movements
+						}
+					)
+					.then(function(response) {
+						this.movements = response.data;
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
 		}
 	}
 });

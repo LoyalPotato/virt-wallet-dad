@@ -24,6 +24,7 @@ Route::post('updateUser', 'AuthControllerAPI@updateUser');
 
 Route::middleware('auth:api')->get('movements', 'MovementControllerAPI@index');
 Route::post('movements', 'MovementControllerAPI@store'); //TODO:
+Route::get('movementsWallet', 'MovementControllerAPI@movementsFromWallet');
 
 Route::get('wallets/count', 'WalletControllerAPI@count');
 Route::middleware('auth:api')->get('wallet/{wallet}', 'WalletControllerAPI@show');
