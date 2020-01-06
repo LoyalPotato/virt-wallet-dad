@@ -14,6 +14,12 @@
       </div>
       <r-inc v-if="newIncome"></r-inc>
     </div>
+
+    <div class="container-fluid">
+      <ul>
+        <li v-for="movement in movements" class="row"> {{movement}}</li>
+      </ul>
+    </div>
     <footer class="bg-white sticky-footer">
       <div class="container my-auto">
         <div class="text-center my-auto copyright">
@@ -48,6 +54,25 @@ export default {
     },
     user() {
       return this.$store.state.user;
+    },
+    movements() {
+      this.$store.dispatch("getMovements")
+        .then(response => {
+          this.movements = this.$store.state.movements;
+      })
+        .catch(error => {
+          this.$toasted.show("Failed getting movements.", {
+            action: {
+              text: "X",
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              }
+            },
+            position: "bottom-center",
+            duration: 2000,
+            type: "error"
+          });
+      });
     }
   }
 };

@@ -28,7 +28,7 @@ class MovementControllerAPI extends Controller
      */
     public function store(StoreMovementRequest $request)
     {
-        /*TODO 
+        /*TODO
         Create movement
         Validation & store
         category_id	categories(id)	RESTRICT	RESTRICT	Alter
@@ -39,7 +39,7 @@ class MovementControllerAPI extends Controller
         from email get user get wallet generate new movement
         update balance
         */
-        
+
         //NOTE: Caso haja algum valor que n esteja correto, o laravel vai automaticamente devolver resposta json com o erro e stat code respetivo
         $request->validate([
             'email' => ['email', 'exists:wallets,email'],
@@ -48,7 +48,7 @@ class MovementControllerAPI extends Controller
             'type_payment' => [Rule::in(["c", "bt"])],
             'iban' => [Rule::requiredIf($request->type_payment == "bt"),'iban']
         ]);
-        
+
         return response()->json(
             ['msg' => 'Movement created'],
             201
@@ -89,7 +89,8 @@ class MovementControllerAPI extends Controller
         //
     }
 
-    /* public function test () {
-        return MovementResource::collection(Movement::paginate(15));
-    } */
+    public function movementsFromWallet(int $id) {
+        Movement::where('wallet_id', $id)->findOrFail()->first();
+    }
+
 }
