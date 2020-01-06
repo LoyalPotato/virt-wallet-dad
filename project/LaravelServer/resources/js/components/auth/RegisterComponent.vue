@@ -131,7 +131,7 @@ name: "RegisterComponent",
       console.log('New picture selected!')
       if (image) {
         console.log('Picture loaded.')
-        this.photo = this.$refs.pictureInput.file;
+        this.photo = image;
 
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!')

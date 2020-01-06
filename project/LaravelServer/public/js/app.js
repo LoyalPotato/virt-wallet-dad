@@ -2521,7 +2521,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (image) {
         console.log('Picture loaded.');
-        this.photo = this.$refs.pictureInput.file;
+        this.photo = image;
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!');
       }

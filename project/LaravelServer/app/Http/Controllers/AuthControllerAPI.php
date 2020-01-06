@@ -9,9 +9,10 @@ define('CLIENT_ID', '2'); */
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use  App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\User;
 use App\Wallet;
+use Illuminate\Http\File;
 
 class AuthControllerAPI extends Controller
 {
@@ -56,15 +57,25 @@ class AuthControllerAPI extends Controller
         $validated = $request->validated();
         $validated['password'] = bcrypt($validated['password']);
         if ($request['photo']) {
-            $validated['photo'] = $request->file('photo')->store('fotos');
+            $image = $request->photo;  // your base64 encoded
+
+            $image = str_replace('data:image/png;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+
+            $imageName = \Str::random(10).'.png';
+
+            \Storage::put(storage_path(). '/app/fotos' . $imageName, base64_decode($image));
+
+
+            $validated['photo'] = $imageName;
         }
 
 
         $user = User::create($validated);
         //$user->wallet()->create();
 
-        $success['token'] =  $user->createToken('AppName')->accessToken;
+        //$success['token'] =  $user->createToken('AppName')->accessToken;
 
-        return response()->json(['success'=>$success], $this->successStatus);
+        //return response()->json(['success'=>$success], $this->successStatus);
     }
 }
