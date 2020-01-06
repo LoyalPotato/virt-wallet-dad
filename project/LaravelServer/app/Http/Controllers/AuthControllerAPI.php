@@ -74,7 +74,7 @@ class AuthControllerAPI extends Controller
 
 
         $user = User::create($validated);
-        //$user->wallet()->create();
+        Wallet::create(['id' => $user['id'],'email' => $user['email'], 'balance' => 0]);
 
         //$success['token'] =  $user->createToken('AppName')->accessToken;
 

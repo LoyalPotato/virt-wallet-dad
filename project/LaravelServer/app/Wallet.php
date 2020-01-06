@@ -15,8 +15,8 @@ class Wallet extends Model
         return $this->hasMany('App\Movement');
     }
 
-    public function user()
+    /* public function user()
     {
-        return $this->belongsTo('App\User');
-    }
+        return $this->belongsTo('App\User', 'email');
+    } */
 }

@@ -41,9 +41,9 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
-    public function wallet()
+    /* public function wallet()
     {
-        return $this->hasOne('App\Wallet', 'email');
-    }
+        return $this->hasOne('App\Wallet');
+    } */
 
 }
