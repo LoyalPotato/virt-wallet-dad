@@ -2431,6 +2431,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserSettings",
@@ -2438,9 +2465,35 @@ __webpack_require__.r(__webpack_exports__);
     TopNav: _TopNavComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
-    return {};
+    return {
+      title: "New User Registration",
+      name: this.$store.state.user.name
+    };
   },
-  methods: {}
+  computed: {},
+  methods: {
+    saveChangesToUser: function saveChangesToUser() {
+      var _this = this;
+
+      console.log("Entered saving changes to user.");
+      this.$store.dispatch("saveUserChanges", {
+        name: this.name
+      }).then(function (response) {
+        _this.$store.dispatch("saveUserChanges").then(function (response) {
+          console.log("Success"); //TODO Trigger success warning
+
+          _this.$router.push("/home"); //TODO user verification?
+
+        });
+      })["catch"](function (error) {
+        console.log("Error changing user.");
+        console.log(error); //TODO: Error page?
+      });
+    },
+    cancelChanges: function cancelChanges() {
+      this.$router.push("/home");
+    }
+  }
 });
 
 /***/ }),
@@ -57082,9 +57135,106 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "content" } }, [_c("top-nav")], 1)
+  return _c(
+    "div",
+    { attrs: { id: "content" } },
+    [
+      _c("top-nav"),
+      _vm._v(" "),
+      _c("div", { staticClass: "container-fluid" }, [
+        _c(
+          "form",
+          {
+            staticClass: "user",
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.saveChangesToUser($event)
+              }
+            }
+          },
+          [
+            _c("div", [
+              _c("label", { attrs: { for: "name" } }, [_vm._v("Name: ")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.name,
+                    expression: "name"
+                  }
+                ],
+                attrs: { type: "text" },
+                domProps: { value: _vm.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.name = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "btn-group" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-danger text-white btn-user",
+                  on: {
+                    click: function($event) {
+                      return _vm.cancelChanges()
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              )
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(1)
+    ],
+    1
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "btn-group btn-group-justified" }, [
+      _c("div", { staticClass: "btn-group" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary text-white btn-user",
+            attrs: { type: "submit" }
+          },
+          [_vm._v("Save Changes")]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("footer", { staticClass: "bg-white sticky-footer" }, [
+      _c("div", { staticClass: "container my-auto" }, [
+        _c("div", { staticClass: "text-center my-auto copyright" }, [
+          _c("span", [_vm._v("Copyright Â© Virtual Wallets 2019")])
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -74837,6 +74987,34 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
           reject(error);
         });
       });
+    },
+    saveUserChanges: function saveUserChanges(data) {
+      return new Promise(function (resolve, reject) {
+        axios.post('/api/updateUser/', {
+          name: data.name
+        }).then(function (response) {
+          resolve();
+        })["catch"](function (error) {
+          reject(error);
+        });
+      });
+      /* axios
+      	.post('/api/register/', {
+      		email: data.email,
+      		password: data.password,
+      		password_confirmation: data.password_confirmation,
+      		name: data.name,
+      		photo: data.photo,
+      		nif: data.nif
+      	})
+      	.then(function(response) {
+      		 localStorage.setItem('access_token', response.data.access_token);
+      		context.commit('assignToken', response.data.access_token);
+      		resolve(response);
+      	})
+      	.catch(function(error) {
+      		reject(error);
+      	}); */
     }
   }
 });
